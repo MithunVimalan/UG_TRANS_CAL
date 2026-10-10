@@ -84,7 +84,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--corner", default="tt_025C_1v80")
     ap.add_argument("--widths", default="8,16")
-    ap.add_argument("--nvec", type=int, default=2001)
+    ap.add_argument("--nvec", type=int, default=1001)
     ap.add_argument("--dists", default="uniform,sparse50,small,gauss")
     ap.add_argument("--modes", default="zero,inertial,transport")
     a = ap.parse_args()

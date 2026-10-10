@@ -1,0 +1,86 @@
+P_total = 0.818115 W  [E: P_dyn + P_leak]
+  P_dyn = 0.812435 W  [E: E_MAC x MAC/s]
+    <- E_MAC = 5.603e-12 J +/-20% [E; results/power/mac_study.csv (csa_acc_bw_kogge_stone)]
+    <- throughput = 1.45e+11 1/s [S; design-spec]
+  P_leak = 0.00568 W  [E: n_PE x P_leak,PE(T_max)]
+    assumes: leakage evaluated at T_j,max (upper bound)
+    <- P_leak,PE(100C,ff) = 5.68e-06 W [C; Liberty ff_100C_1v95 sum (upper bound)]
+   input evidence classes: C, E, S
+E_op = 5.64217e-12 J  [E: P_avg / throughput]
+  assumes: P_avg averaged over a window containing an integer number of operations
+  assumes: steady-state operation at the stated throughput
+  P_total = 0.818115 W  [E: P_dyn + P_leak]
+    P_dyn = 0.812435 W  [E: E_MAC x MAC/s]
+      <- E_MAC = 5.603e-12 J +/-20% [E; results/power/mac_study.csv (csa_acc_bw_kogge_stone)]
+      <- throughput = 1.45e+11 1/s [S; design-spec]
+    P_leak = 0.00568 W  [E: n_PE x P_leak,PE(T_max)]
+      assumes: leakage evaluated at T_j,max (upper bound)
+      <- P_leak,PE(100C,ff) = 5.68e-06 W [C; Liberty ff_100C_1v95 sum (upper bound)]
+  <- throughput = 1.45e+11 1/s [S; design-spec]
+   input evidence classes: C, E, S
+EDP = 3.86414e-20 J s  [E: E * t]
+  <- E_MAC = 5.603e-12 J +/-20% [E; results/power/mac_study.csv (csa_acc_bw_kogge_stone)]
+  <- t_MAC = 6.89655e-09 s [E; 1/f_clk]
+   input evidence classes: E
+power density = 120286 W/m^2  [E: P / A]
+  P_total = 0.818115 W  [E: P_dyn + P_leak]
+    P_dyn = 0.812435 W  [E: E_MAC x MAC/s]
+      <- E_MAC = 5.603e-12 J +/-20% [E; results/power/mac_study.csv (csa_acc_bw_kogge_stone)]
+      <- throughput = 1.45e+11 1/s [S; design-spec]
+    P_leak = 0.00568 W  [E: n_PE x P_leak,PE(T_max)]
+      assumes: leakage evaluated at T_j,max (upper bound)
+      <- P_leak,PE(100C,ff) = 5.68e-06 W [C; Liberty ff_100C_1v95 sum (upper bound)]
+  A_array = 6.80143e-06 m^2  [E: n_PE x A_PE]
+    <- A_PE = 6.80143e-09 m^2 [E; Liberty cell area / 0.7 utilisation]
+   input evidence classes: C, E, S
+T_j = 322.693 K  [E: T_ref + P R_th]
+  assumes: steady state
+  assumes: all dissipated power flows through R_th
+  assumes: R_th measured/defined for the same boundary conditions (e.g. JEDEC board, still air)
+  <- T_amb = 298.15 K [S; design-spec]
+  P_total = 0.818115 W  [E: P_dyn + P_leak]
+    P_dyn = 0.812435 W  [E: E_MAC x MAC/s]
+      <- E_MAC = 5.603e-12 J +/-20% [E; results/power/mac_study.csv (csa_acc_bw_kogge_stone)]
+      <- throughput = 1.45e+11 1/s [S; design-spec]
+    P_leak = 0.00568 W  [E: n_PE x P_leak,PE(T_max)]
+      assumes: leakage evaluated at T_j,max (upper bound)
+      <- P_leak,PE(100C,ff) = 5.68e-06 W [C; Liberty ff_100C_1v95 sum (upper bound)]
+  <- theta_JA = 30 K/W [S; design-spec]
+   input evidence classes: C, E, S
+P_max,thermal = 2.5 W  [E: (T_j,max - T_ref) / R_th]
+  assumes: steady state
+  assumes: leakage evaluated at T_j,max must be subtracted to obtain the dynamic budget
+  <- T_j,max = 373.15 K [C; hottest Liberty characterisation corner]
+  <- T_amb = 298.15 K [S; design-spec]
+  <- theta_JA = 30 K/W [S; design-spec]
+   input evidence classes: C, S
+MAC/s (thermal) = 4.45176e+11 1/s  [E: (P_max - P_leak) / E_MAC]
+  P_max,thermal = 2.5 W  [E: (T_j,max - T_ref) / R_th]
+    assumes: steady state
+    assumes: leakage evaluated at T_j,max must be subtracted to obtain the dynamic budget
+    <- T_j,max = 373.15 K [C; hottest Liberty characterisation corner]
+    <- T_amb = 298.15 K [S; design-spec]
+    <- theta_JA = 30 K/W [S; design-spec]
+  P_leak = 0.00568 W  [E: n_PE x P_leak,PE(T_max)]
+    assumes: leakage evaluated at T_j,max (upper bound)
+    <- P_leak,PE(100C,ff) = 5.68e-06 W [C; Liberty ff_100C_1v95 sum (upper bound)]
+  <- E_MAC = 5.603e-12 J +/-20% [E; results/power/mac_study.csv (csa_acc_bw_kogge_stone)]
+   input evidence classes: C, E, S
+MAC/s (power budget) = 8.82242e+10 1/s  [E: (P_budget - P_leak) / E_MAC]
+  <- P_budget = 0.5 W [S; design-spec]
+  P_leak = 0.00568 W  [E: n_PE x P_leak,PE(T_max)]
+    assumes: leakage evaluated at T_j,max (upper bound)
+    <- P_leak,PE(100C,ff) = 5.68e-06 W [C; Liberty ff_100C_1v95 sum (upper bound)]
+  <- E_MAC = 5.603e-12 J +/-20% [E; results/power/mac_study.csv (csa_acc_bw_kogge_stone)]
+   input evidence classes: C, E, S
+
+metrics (1000 PEs at f_clk): {'E_MAC_pJ': '5.603', 'MAC_per_s': '1.45e+11', 'ops_per_s': '2.9e+11', 'P_W': '0.8124', 'MAC_per_s_per_W': '1.785e+11', 'TOPS_per_W': '0.357'}
+
+as expected, a class-I input cannot be used silently: parameter 'E_clock_tree' is unavailable (no clock-tree synthesis performed); required for clock-tree energy; authoritative source: CTS + parasitic extraction of the placed array
+
+P_total(1000 PEs) = 0.8181 W
+elasticities d ln P / d ln x: {'V': 1.986, 'f': 0.993, 'act': 0.993, 'C': 0.993} ; dP/P per +1 K at 100 C: 7.65e-04
+Monte Carlo (E_MAC 1-sigma 20 %): mean 0.8175 W, 5-95 % [0.5502, 1.084] W
+interval (activity 0.6..1.0, V 1.71..1.89 V): [0.4456, 0.9014] W
+
+Landauer floor per MAC (16 bits erased) at 300 K: 4.59e-20 J; ratio E_MAC / floor = 1.22e+08

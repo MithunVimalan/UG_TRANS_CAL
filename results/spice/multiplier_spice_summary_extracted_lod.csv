@@ -1,0 +1,2 @@
+design,signed,cells,view,nvec,period_ns,spice_E_fJ,gate_zero_fJ,gate_inertial_fJ,gate_transport_fJ,spice_over_inertial,functional_errors,wall_s,ngspice
+array_rc,False,120,extracted_lod,41,12,3067,1281,2587,5139,1.185,0,1163,42

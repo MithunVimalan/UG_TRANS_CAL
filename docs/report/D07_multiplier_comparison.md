@@ -11,7 +11,7 @@
 | Outputs | 5 fF per product bit |
 | Interconnect | none (pre-layout). Wire-load and extracted parasitics are the next evidence level (D11) |
 | Stimulus | 1 001 operand pairs per distribution, same seed for all designs: uniform; sparse (50 % zeros); small (|x| < 2^(n/2)); Gaussian (NN-weight-like, σ = range/16) |
-| Timing | worst register-to-register-style path from `ugcal.gatesim` STA (max over edges and when-conditions). 3–10 % pessimistic relative to OpenSTA on the same netlists (D10 §4) |
+| Timing | worst register-to-register-style path from `ugcal.gatesim` STA (max over edges and when-conditions). 2–8 % longer than OpenSTA's worst arrival on the same multiplier netlists (2–16 % including the MACs), because rise and fall delays are not tracked separately (D10 §5) |
 | Energy | `ugcal.gatesim` event-driven simulation in three delay modes. Zero-delay = functional transitions only; inertial = glitches shorter than a gate delay filtered; transport = all glitches propagate. Boundary: VPWR of the multiplier cells; input-net switching excluded |
 
 Algorithm and implementation are kept apart in the names: `<partial products>_<reduction>_<final adder>`. For example, `dadda_ks` is an AND array + Dadda tree + Kogge–Stone adder, and `booth4_dadda_ks` is radix-4 Booth + Dadda + Kogge–Stone. `yosys_abc` is what Yosys 0.33 + ABC produce from a behavioural `p = a * b` with LibreLane's synthesis exclusion list.

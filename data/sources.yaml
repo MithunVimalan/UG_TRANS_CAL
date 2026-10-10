@@ -14,7 +14,11 @@
 #                               inspected (the container's network policy blocks
 #                               publisher, arXiv and most documentation hosts)
 #                 restricted  - known to exist, requires licence/NDA/registration; not inspected
+#                 input-file  - cited in the user's input research file; not re-verified here
 #   location    section / page / table / file path where relevant
+#   cat         brief §19 area: A thermodynamics, B device physics, C compact models,
+#               D foundry/PDK, E circuit design, F physical design and tools,
+#               G AI accelerators, H thermal and reliability
 #   supports    the specific claims or numbers this source is used for
 #   limits      known limitations, supersession
 #
@@ -24,6 +28,7 @@
 # A. Fundamental constants and thermodynamics of computation
 # ---------------------------------------------------------------------------
 - id: si2019
+  cat: A
   title: "The International System of Units (SI), 9th edition (2019)"
   authors: "Bureau International des Poids et Mesures (BIPM)"
   date: 2019-05-20
@@ -34,6 +39,7 @@
   limits: "Constants are exact by definition; epsilon_0 is not (measured, CODATA)."
 
 - id: codata2022
+  cat: A
   title: "CODATA Recommended Values of the Fundamental Physical Constants: 2022"
   authors: "P. J. Mohr, D. B. Newell, B. N. Taylor, E. Tiesinga (NIST)"
   date: 2024
@@ -43,6 +49,7 @@
   supports: "epsilon_0 = 8.8541878188(14)e-12 F/m (relative standard uncertainty 1.6e-10)"
 
 - id: landauer1961
+  cat: A
   title: "Irreversibility and Heat Generation in the Computing Process"
   authors: "R. Landauer"
   venue: "IBM Journal of Research and Development 5(3), 183-191"
@@ -52,9 +59,10 @@
   kind: peer-reviewed-theoretical
   access: search
   supports: "Logical irreversibility implies a minimum heat generation 'of the order of kT for each irreversible function' (abstract); origin of kT ln 2 per erased bit."
-  limits: "Argument made plausible rather than proven in 1961 (see later critiques and proofs, e.g. Sagawa 2014, and experimental tests)."
+  limits: "Argument made plausible rather than proven in 1961; later experimental tests (berut2012, jun2014) and finite-time analyses (proesmans2020) support it."
 
 - id: bennett1973
+  cat: A
   title: "Logical Reversibility of Computation"
   authors: "C. H. Bennett"
   venue: "IBM Journal of Research and Development 17(6), 525-532"
@@ -65,6 +73,7 @@
   supports: "Any computation can be embedded in a logically reversible one (compute, copy output, uncompute) at the cost of extra steps (~2x) and temporary storage; so kT ln2 per step is not a necessary cost of computation, only of erasure."
 
 - id: berut2012
+  cat: A
   title: "Experimental verification of Landauer's principle linking information and thermodynamics"
   authors: "A. Berut, A. Arakelyan, A. Petrosyan, S. Ciliberto, R. Dillenschneider, E. Lutz"
   venue: "Nature 483, 187-189"
@@ -75,6 +84,7 @@
   supports: "Colloidal particle in a modulated double-well potential; mean dissipated heat of erasure approaches kT ln2 in the limit of long (quasi-static) erasure cycles; excess heat grows as cycle time shortens."
 
 - id: jun2014
+  cat: A
   title: "High-Precision Test of Landauer's Principle in a Feedback Trap"
   authors: "Y. Jun, M. Gavrilov, J. Bechhoefer"
   venue: "Physical Review Letters 113, 190601"
@@ -85,6 +95,7 @@
   supports: "Asymptotic erasure work 0.71 +/- 0.03 kT vs ln2 = 0.693 kT; dissipation in excess of kT ln2 scales ~1/tau with protocol duration tau."
 
 - id: proesmans2020
+  cat: A
   title: "Finite-Time Landauer Principle"
   authors: "K. Proesmans, J. Ehrich, J. Bechhoefer"
   venue: "Physical Review Letters 125, 100602"
@@ -96,6 +107,7 @@
   supports: "Minimum average work to erase a bit in finite time exceeds kT ln2 by a term that grows as the protocol is shortened; closed form in the short-time limit."
 
 - id: gao_limmer2021
+  cat: A
   title: "Principles of low dissipation computing from a stochastic circuit model"
   authors: "C. Y. Gao, D. T. Limmer"
   date: 2021
@@ -106,6 +118,7 @@
   limits: "Journal venue not confirmed by this project (search results gave arXiv and a 2021 publication date only)."
 
 - id: freitas2021
+  cat: A
   title: "Stochastic Thermodynamics of Nonlinear Electronic Circuits: A Realistic Framework for Computing Around kT"
   authors: "N. Freitas, J.-C. Delvenne, M. Esposito"
   venue: "Physical Review X 11, 031064"
@@ -116,6 +129,7 @@
   supports: "Thermodynamically consistent noise model of MOS transistors in subthreshold; stochastic CMOS inverter deviates from deterministic behaviour near kT-scale energies."
 
 - id: margolus1998
+  cat: A
   title: "The maximum speed of dynamical evolution"
   authors: "N. Margolus, L. B. Levitin"
   venue: "Physica D 120(1-2), 188-195"
@@ -127,6 +141,7 @@
   supports: "Minimum time to an orthogonal state t >= h/(4E) with E the mean energy above the ground state; at most ~3e33 operations per second per joule."
 
 - id: meindl2000
+  cat: A
   title: "The fundamental limit on binary switching energy for terascale integration (TSI)"
   authors: "J. D. Meindl, J. A. Davis"
   venue: "IEEE Journal of Solid-State Circuits 35(10), 1515-1516"
@@ -137,6 +152,7 @@
   limits: "Full text not inspected; the 2 ln2 kT/q value is carried as 'via secondary'."
 
 - id: zhirnov2003
+  cat: A
   title: "Limits to binary logic switch scaling - a gedanken model"
   authors: "V. V. Zhirnov, R. K. Cavin, J. A. Hutchby, G. I. Bourianoff"
   venue: "Proceedings of the IEEE 91(11), 1934-1939"
@@ -147,6 +163,7 @@
   limits: "Contested by Lent and co-workers (adiabatic switching can dissipate < kT ln2); see 2007 comment/reply."
 
 - id: swanson1972
+  cat: A
   title: "Ion-Implanted Complementary MOS Transistors in Low-Voltage Circuits"
   authors: "R. M. Swanson, J. D. Meindl"
   venue: "IEEE Journal of Solid-State Circuits SC-7(2), 146-153"
@@ -156,6 +173,7 @@
   supports: "Weak-inversion analysis of the CMOS inverter: smallest functional supply ~8 kT/q (abstract)."
 
 - id: kish2002
+  cat: A
   title: "End of Moore's law: thermal (noise) death of integration in micro and nano electronics"
   authors: "L. B. Kish"
   venue: "Physics Letters A 305, 144-149"
@@ -168,6 +186,7 @@
 # B. Device physics and compact models
 # ---------------------------------------------------------------------------
 - id: roy2003
+  cat: B
   title: "Leakage Current Mechanisms and Leakage Reduction Techniques in Deep-Submicrometer CMOS Circuits"
   authors: "K. Roy, S. Mukhopadhyay, H. Mahmoodi-Meimand"
   venue: "Proceedings of the IEEE 91(2), 305-327"
@@ -177,6 +196,7 @@
   supports: "Taxonomy of leakage: weak inversion (subthreshold), DIBL, GIDL, gate-oxide tunnelling, junction leakage."
 
 - id: ortizconde2002
+  cat: B
   title: "A review of recent MOSFET threshold voltage extraction methods"
   authors: "A. Ortiz-Conde, F. J. Garcia Sanchez, J. J. Liou, A. Cerdeira, M. Estrada, Y. Yue"
   venue: "Microelectronics Reliability 42(4-5), 583-596"
@@ -187,6 +207,7 @@
   supports: "Definitions of constant-current and maximum-gm linear-extrapolation threshold extraction used in sim/spice/device_char.py; Vth depends on the extraction method."
 
 - id: pelgrom1989
+  cat: B
   title: "Matching properties of MOS transistors"
   authors: "M. J. M. Pelgrom, A. C. J. Duinmaijer, A. P. G. Welbers"
   venue: "IEEE Journal of Solid-State Circuits 24(5), 1433-1439"
@@ -196,6 +217,7 @@
   supports: "sigma(dVth) proportional to 1/sqrt(W L) (area law) plus a distance term; the SKY130 mismatch cards use sigma(Vth0) = A/sqrt(W L mult)."
 
 - id: lundstrom1997
+  cat: B
   title: "Elementary scattering theory of the Si MOSFET"
   authors: "M. Lundstrom"
   venue: "IEEE Electron Device Letters 18(7), 361-363"
@@ -206,6 +228,7 @@
   supports: "One-flux scattering (backscattering) model; for very short channels the current is limited by injection from the source (ballistic limit)."
 
 - id: bsim4_manual
+  cat: C
   title: "BSIM4 MOSFET Model User's Manual (BSIM4.5.0)"
   authors: "UC Berkeley BSIM Group (M. Dunga et al.)"
   date: 2005-07-29
@@ -217,6 +240,7 @@
   limits: "The 4.5.0 manual itself was not inspected (host blocked); equations were exercised through ngspice's BSIM4 implementation."
 
 - id: bsimcmg_manual
+  cat: C
   title: "BSIM-CMG 111.0.0 Technical Manual"
   authors: "UC Berkeley BSIM Group"
   url: https://simetrix.co.uk/supplementary/Docs/BSIM-CMG/BSIM-CMG_111.0.0_Technical_Manual.pdf
@@ -228,6 +252,7 @@
 # E. Arithmetic circuits
 # ---------------------------------------------------------------------------
 - id: wallace1964
+  cat: E
   title: "A Suggestion for a Fast Multiplier"
   authors: "C. S. Wallace"
   venue: "IEEE Transactions on Electronic Computers EC-13(1), 14-17"
@@ -238,6 +263,7 @@
   supports: "Column-wise reduction of the partial-product matrix with full adders on bit triples and half adders on remaining pairs; delay proportional to log_{3/2}(N) reduction stages."
 
 - id: dadda1965
+  cat: E
   title: "Some Schemes for Parallel Multipliers"
   authors: "L. Dadda"
   venue: "Alta Frequenza 34(5), 349-356"
@@ -247,15 +273,17 @@
   supports: "Reduction to the height sequence 2,3,4,6,9,13,... with the minimum number of counters per stage; fewer adders than Wallace with the same number of stages."
 
 - id: booth1951
+  cat: E
   title: "A Signed Binary Multiplication Technique"
   authors: "A. D. Booth"
   venue: "Quarterly Journal of Mechanics and Applied Mathematics 4(2), 236-240"
   date: 1951
   kind: peer-reviewed-theoretical
   access: search
-  supports: "Recoding of the multiplier to handle two's-complement operands; basis of radix-4 modified Booth (MacSorley 1961)."
+  supports: "Recoding of the multiplier to handle two's-complement operands; basis of the radix-4 (modified Booth) recoding implemented as pp_booth4."
 
 - id: baughwooley1973
+  cat: E
   title: "A Two's Complement Parallel Array Multiplication Algorithm"
   authors: "C. R. Baugh, B. A. Wooley"
   venue: "IEEE Transactions on Computers C-22(12), 1045-1047"
@@ -263,3 +291,432 @@
   kind: peer-reviewed-theoretical
   access: search
   supports: "Signed array multiplication by inverting partial-product bits that involve one sign bit and adding correction constants (implemented as pp_baugh_wooley; identity checked exhaustively in tests)."
+
+- id: kogge1973
+  cat: E
+  title: "A Parallel Algorithm for the Efficient Solution of a General Class of Recurrence Equations"
+  authors: "P. M. Kogge, H. S. Stone"
+  venue: "IEEE Transactions on Computers C-22(8), 786-793"
+  date: 1973-08
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Recursive doubling; basis of the Kogge-Stone prefix adder (log2 n levels, fan-out 2) implemented in ugcal.arith.multipliers.cpa."
+  limits: "Page range differs between secondary listings (786-792/793); the IEEE record was not opened."
+
+- id: brentkung1982
+  cat: E
+  title: "A Regular Layout for Parallel Adders"
+  authors: "R. P. Brent, H. T. Kung"
+  venue: "IEEE Transactions on Computers C-31(3), 260-264"
+  date: 1982
+  url: https://maths-people.anu.edu.au/~brent/pub/pub060.html
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Prefix adder with O(log n) time and regular layout, fewer combine cells than Kogge-Stone; implemented as cpa(kind='brent_kung')."
+
+- id: chandrakasan1992
+  cat: E
+  title: "Low-Power CMOS Digital Design"
+  authors: "A. P. Chandrakasan, S. Sheng, R. W. Brodersen"
+  venue: "IEEE Journal of Solid-State Circuits 27(4), 473-484"
+  date: 1992-04
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "P = alpha C V^2 f decomposition of CMOS power; supply scaling with parallelism/pipelining; glitching as a power component."
+
+- id: veendrick1984
+  cat: E
+  title: "Short-circuit dissipation of static CMOS circuitry and its impact on the design of buffer circuits"
+  authors: "H. J. M. Veendrick"
+  venue: "IEEE Journal of Solid-State Circuits SC-19(4), 468-473"
+  date: 1984-08
+  doi: 10.1109/JSSC.1984.1052168
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Short-circuit power of a CMOS inverter vs input slope and load (form implemented, flagged, unused: ugcal.switching.short_circuit_power_veendrick)."
+  limits: "Formula transcribed from secondary descriptions; paper not opened."
+
+- id: calhoun2005
+  cat: E
+  title: "Modeling and Sizing for Minimum Energy Operation in Subthreshold Circuits"
+  authors: "B. H. Calhoun, A. Wang, A. Chandrakasan"
+  venue: "IEEE Journal of Solid-State Circuits 40(9), 1778-1786"
+  date: 2005-09
+  kind: peer-reviewed-experimental
+  access: search
+  supports: "Analytical minimum-energy supply for a given frequency in subthreshold; minimum-sized devices theoretically optimal; 0.18 um test-chip measurements (model of D6 §8)."
+
+- id: sakurai1990
+  cat: B
+  title: "Alpha-Power Law MOSFET Model and Its Applications to CMOS Inverter Delay and Other Formulas"
+  authors: "T. Sakurai, A. R. Newton"
+  venue: "IEEE Journal of Solid-State Circuits 25(2), 584-594"
+  date: 1990-04
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "I_Dsat proportional to (V_GS - V_th)^alpha; inverter delay t_pd proportional to C V / (V - V_th)^alpha (ugcal.switching.fit_alpha_power)."
+
+# ---------------------------------------------------------------------------
+# G. AI accelerators and data movement
+# ---------------------------------------------------------------------------
+- id: kung1982
+  cat: G
+  title: "Why Systolic Architectures?"
+  authors: "H. T. Kung"
+  venue: "IEEE Computer 15(1), 37-46"
+  date: 1982-01
+  doi: 10.1109/MC.1982.1653825
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Systolic arrays: data pumped through a regular array of PEs, each operand used many times per memory access (ugcal.array model, D8 §5)."
+
+- id: horowitz2014
+  cat: G
+  title: "Computing's Energy Problem (and what we can do about it)"
+  authors: "M. Horowitz"
+  venue: "IEEE ISSCC 2014, Digest of Technical Papers, paper 1.1, 10-14"
+  date: 2014-02
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Power as the limiter of performance; specialised hardware matched to the task. The widely reproduced 45 nm energy table (8-bit multiply ~0.2 pJ, memory access orders of magnitude more) is known here only via secondary reproductions."
+  limits: "Energy table values are 'rough' and from an image; not opened; DOI not confirmed in this session."
+
+- id: chen2017eyeriss
+  cat: G
+  title: "Eyeriss: An Energy-Efficient Reconfigurable Accelerator for Deep Convolutional Neural Networks"
+  authors: "Y.-H. Chen, T. Krishna, J. S. Emer, V. Sze"
+  venue: "IEEE Journal of Solid-State Circuits 52(1), 127-138"
+  date: 2017-01
+  url: https://dspace.mit.edu/handle/1721.1/101151
+  kind: peer-reviewed-experimental
+  access: search
+  supports: "65 nm CNN accelerator with 168 PEs and the row-stationary dataflow; AlexNet convolutional layers at 35 frames/s and 278 mW (measured silicon); design organised around minimising data movement."
+  limits: "System-level measurement (includes on-chip memory and control); DOI not confirmed in this session."
+
+- id: sze2017
+  cat: G
+  title: "Efficient Processing of Deep Neural Networks: A Tutorial and Survey"
+  authors: "V. Sze, Y.-H. Chen, T.-J. Yang, J. S. Emer"
+  venue: "Proceedings of the IEEE 105(12), 2295-2329"
+  date: 2017-12
+  doi: 10.1109/JPROC.2017.2761740
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Dataflow taxonomy (weight/output/row stationary), memory-hierarchy energy, metrics for DNN accelerators."
+
+- id: jouppi2017
+  cat: G
+  title: "In-Datacenter Performance Analysis of a Tensor Processing Unit"
+  authors: "N. P. Jouppi, C. Young, N. Patil, D. Patterson, et al."
+  venue: "Proceedings of the 44th International Symposium on Computer Architecture (ISCA '17)"
+  date: 2017-06
+  doi: 10.1145/3079856.3080246
+  url: https://arxiv.org/abs/1704.04760
+  kind: peer-reviewed-experimental
+  access: search
+  supports: "65,536 8-bit MAC matrix unit, 92 TOPS peak, 28 MiB on-chip memory (abstract)."
+  limits: "Different node, memory system and operation definition; not used numerically."
+
+- id: lavin2016
+  cat: G
+  title: "Fast Algorithms for Convolutional Neural Networks"
+  authors: "A. Lavin, S. Gray"
+  venue: "IEEE CVPR 2016, 4013-4021"
+  date: 2016
+  url: https://arxiv.org/abs/1509.09308
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Winograd minimal filtering for CNN layers; multiplication reduction up to 4x for larger tiles, 2.25x for F(2x2,3x3) (D8 §6)."
+
+- id: nivi9944_systolic
+  cat: G
+  title: "systolic-array: TPU-style 8x8 INT8 systolic array on SkyWater Sky130 (repository)"
+  authors: "GitHub user nivi9944"
+  date: 2026-10-05
+  version: "commit 507ac73941c91678d5b9c09bf67a9ac6988ed614"
+  url: https://github.com/nivi9944/systolic-array
+  kind: open-source-code
+  access: code
+  location: "results/power_measured.json; README 'Power'; tb/Makefile (GLS with -DFUNCTIONAL -DUNIT_DELAY=#0)"
+  supports: "Post-route SKY130 HD int8 MAC array (22-bit accumulators, 64 PEs), OpenSTA with GLS VCD at tt/25C/1.8V: 92.6 mW at 90.91 MHz, 15.92 pJ/MAC; sequential/combinational/clock 25.7/50.8/16.2 mW (D8 §5.1)."
+  limits: "Not peer-reviewed, not silicon; zero-delay activity (no glitches); netlist not re-analysed here."
+
+# ---------------------------------------------------------------------------
+# H. Thermal engineering and reliability
+# ---------------------------------------------------------------------------
+- id: huang2006hotspot
+  cat: H
+  title: "HotSpot: A Compact Thermal Modeling Methodology for Early-Stage VLSI Design"
+  authors: "W. Huang, S. Ghosh, S. Velusamy, K. Sankaranarayanan, K. Skadron, M. R. Stan"
+  venue: "IEEE Transactions on VLSI Systems 14(5), 501-513"
+  date: 2006
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Compact RC thermal networks of die and package for early-stage, floorplan-level temperature (static and transient); the approach behind ugcal.thermal.rc_network_transient."
+
+- id: pop2010
+  cat: H
+  title: "Energy dissipation and transport in nanoscale devices"
+  authors: "E. Pop"
+  venue: "Nano Research 3(3), 147-169"
+  date: 2010
+  doi: 10.1007/s12274-010-1019-z
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Review of self-heating, thermal boundary resistance and heat transport in nanoscale transistors and interconnects."
+
+- id: glassbrenner1964
+  cat: H
+  title: "Thermal Conductivity of Silicon and Germanium from 3 K to the Melting Point"
+  authors: "C. J. Glassbrenner, G. A. Slack"
+  venue: "Physical Review 134, A1058"
+  date: 1964
+  doi: 10.1103/PhysRev.134.A1058
+  kind: peer-reviewed-experimental
+  access: search
+  supports: "Measured thermal conductivity of single-crystal Si from 3 to 1580 K, apparatus accuracy about +/-5 % (abstract); basis of k_Si ~ 148 W/m K at room temperature used in D9."
+
+- id: black1969
+  cat: H
+  title: "Electromigration - A brief survey and some recent results"
+  authors: "J. R. Black"
+  venue: "IEEE Transactions on Electron Devices 16(4), 338-347"
+  date: 1969
+  doi: 10.1109/T-ED.1969.16754
+  kind: peer-reviewed-experimental
+  access: search
+  supports: "MTTF = A J^-n exp(Ea/kT) (Black's equation), form quoted in D6 §11; parameters for SKY130 unavailable."
+
+- id: vassighi2006
+  cat: H
+  title: "Thermal and Power Management of Integrated Circuits"
+  authors: "A. Vassighi, M. Sachdev"
+  venue: "Springer (book)"
+  date: 2006
+  kind: book
+  access: search
+  supports: "Electro-thermal coupling of leakage and junction temperature; thermal runaway conditions (D6 §10, D9)."
+  limits: "Book not opened."
+
+# ---------------------------------------------------------------------------
+# D. Foundry documentation and PDKs (files read at pinned commits)
+# ---------------------------------------------------------------------------
+- id: sky130_docs
+  cat: D
+  title: "SkyWater SKY130 PDK documentation sources (google/skywater-pdk)"
+  authors: "SkyWater Technology Foundry and Google"
+  version: "commit 7198cf64"
+  url: https://github.com/google/skywater-pdk
+  kind: open-pdk
+  access: file
+  location: "docs/rules/device-details.rst; docs/rules/periphery*; docs/rules/rcx/*.tsv"
+  supports: "Device model validity (0-1.95 V), documented Vth/Idsat windows, design rules, sheet resistances (D4, D5)."
+  limits: "Labelled experimental preview; electrical/EM rules and reliability data absent."
+
+- id: sky130_fd_pr
+  cat: D
+  title: "skywater-pdk-libs-sky130_fd_pr (SKY130 primitive devices and models)"
+  authors: "SkyWater Technology Foundry; maintained by the FOSSi Foundation"
+  version: "commit 16f93a795d87ea2b393fe5c74d32674e111e44a2"
+  url: https://github.com/fossi-foundation/skywater-pdk-libs-sky130_fd_pr
+  kind: foundry-supplied
+  access: file
+  location: "models/sky130.lib.spice; models/corners/*; cells/*/*.pm3.spice; models/parameters/critical.spice"
+  supports: "BSIM4 v4.5 binned model cards for all corners, mismatch and Monte Carlo sections (D4)."
+
+- id: sky130_fd_sc_hd
+  cat: D
+  title: "skywater-pdk-libs-sky130_fd_sc_hd (SKY130 high-density standard cells)"
+  authors: "SkyWater Technology Foundry; maintained by the FOSSi Foundation"
+  version: "commit 9cb2d7cb8ed4619094263614039a61b6b2d22a88"
+  url: https://github.com/fossi-foundation/skywater-pdk-libs-sky130_fd_sc_hd
+  kind: foundry-supplied
+  access: file
+  location: "timing/sky130_fd_sc_hd__*.lib; cells/*/*.spice, *.gds, *.lef; tech/*.tlef"
+  supports: "Liberty NLDM timing, power and leakage at 16 corners; cell netlists and layouts; tech LEF capacitances (D4, D7, D8, D9)."
+  limits: "Characterisation conditions undocumented."
+
+- id: open_pdks
+  cat: D
+  title: "open_pdks (PDK installer, Magic tech files, extraction rules, flow configs)"
+  authors: "R. T. Edwards and contributors"
+  version: "commit 0ec4fa67"
+  url: https://github.com/RTimothyEdwards/open_pdks
+  kind: open-source-code
+  access: code
+  location: "sky130/magic/sky130.tech; sky130 librelane configs; OpenRCX rules"
+  supports: "Magic extraction technology used for the 22 extracted cells; LibreLane synthesis exclusion list (D5, D7)."
+
+- id: asap7_repo
+  cat: D
+  title: "ASAP7 predictive PDK repository (The-OpenROAD-Project/asap7)"
+  authors: "Arizona State University / Arm; OpenROAD project"
+  version: "commit d24f8b85"
+  url: https://github.com/The-OpenROAD-Project/asap7
+  kind: predictive
+  access: file
+  location: "README"
+  supports: "Existence, licence and content of the ASAP7 kit (D5)."
+  limits: "Predictive, not manufacturable; BSIM-CMG cards not inspected."
+
+- id: clark2016asap7
+  cat: D
+  title: "ASAP7: A 7-nm FinFET Predictive Process Design Kit"
+  authors: "L. T. Clark, V. Vashishtha, L. Shifren, A. Gujja, S. Sinha, B. Cline, C. Ramamurthy, G. Yeric"
+  venue: "Microelectronics Journal 53, 105-115"
+  date: 2016-07
+  kind: predictive
+  access: search
+  supports: "Definition of the ASAP7 predictive kit (academic use, not tied to a foundry; four Vt levels)."
+
+- id: zhao2006ptm
+  cat: D
+  title: "New Generation of Predictive Technology Model for Sub-45 nm Early Design Exploration"
+  authors: "W. Zhao, Y. Cao"
+  venue: "IEEE Transactions on Electron Devices 53(11), 2816-2823"
+  date: 2006-11
+  doi: 10.1109/TED.2006.884077
+  kind: predictive
+  access: search
+  supports: "Predictive Technology Model (PTM) cards; classification of predictive models in D5."
+
+- id: guthaus2016openram
+  cat: F
+  title: "OpenRAM: An Open-Source Memory Compiler"
+  authors: "M. R. Guthaus, J. E. Stine, S. Ataei, B. Chen, B. Wu, M. Sarwar"
+  venue: "Proceedings of the 35th International Conference on Computer-Aided Design (ICCAD 2016)"
+  date: 2016
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Origin of the sky130_sram_1kbyte_1rw1r_32x256_8 Liberty used for E_word (class H, D8 §5)."
+
+- id: foundry_public_claims
+  cat: D
+  title: "Public process announcements and conference summaries: TSMC N2 (IEDM 2024), Intel 18A (VLSI 2025), Samsung 3GAE PDK v0.1 (2019), GF 22FDX back-bias, IHP SG13G2 and GF180MCU open PDKs"
+  authors: "TSMC; Intel Foundry; Samsung Foundry; GlobalFoundries; IHP"
+  kind: secondary
+  access: search
+  supports: "Existence and access model of leading-edge and other kits (NDA vs open); vendor-reported process-level claims listed in D5."
+  limits: "Vendor-reported, comparison-basis dependent; device-level data under NDA; not used in any calculation."
+
+# ---------------------------------------------------------------------------
+# F. Physical design, analysis tools and standards
+# ---------------------------------------------------------------------------
+- id: ngspice
+  cat: F
+  title: "ngspice circuit simulator"
+  authors: "ngspice developers"
+  version: "42 (Ubuntu 24.04 package, KLU solver)"
+  url: https://ngspice.sourceforge.io/
+  kind: open-source-code
+  access: code
+  supports: "All transistor-level results (class F)."
+
+- id: opensta
+  cat: F
+  title: "OpenSTA static timing analyser"
+  authors: "Parallax Software and contributors"
+  version: "3.1.0, commit 7b261909c1730d963252142e136daaa0199e333c"
+  url: https://github.com/parallaxsw/OpenSTA
+  kind: open-source-code
+  access: code
+  location: "power/Power.cc (default input activity 0.1 / min clock period; internal + switching + leakage)"
+  supports: "Independent cross-check of gate-level power (D10 §5)."
+
+- id: yosys
+  cat: F
+  title: "Yosys Open SYnthesis Suite (with ABC)"
+  authors: "C. Wolf (Claire Xenia Wolf) and contributors"
+  version: "0.33 (git sha1 2584903a060)"
+  url: https://github.com/YosysHQ/yosys
+  kind: open-source-code
+  access: code
+  supports: "Synthesis baselines mul8u/mul8s/mul16u (D7)."
+
+- id: magic
+  cat: F
+  title: "Magic VLSI layout tool"
+  authors: "R. T. Edwards and contributors"
+  version: "8.3.685 (built from source)"
+  url: https://github.com/RTimothyEdwards/magic
+  kind: open-source-code
+  access: code
+  supports: "Layout extraction of the standard cells (D4 §3)."
+
+- id: liberty_ref
+  cat: F
+  title: "Liberty Reference Manual / Liberty User Guide"
+  authors: "Synopsys (Liberty open-source programme)"
+  kind: standard
+  access: restricted
+  supports: "Definition of internal_power, switching_power_split_model and NLDM semantics."
+  limits: "Not inspected; conventions established empirically (D6 §6.2) and from OpenSTA's implementation."
+
+- id: jesd51
+  cat: H
+  title: "JEDEC JESD51 series: thermal measurement methodology for semiconductor packages"
+  authors: "JEDEC Solid State Technology Association"
+  kind: standard
+  access: restricted
+  supports: "Definitions of theta_JA, theta_JC, Psi_JT; theta_JA is a package-comparison metric for the standard test board."
+  limits: "Clauses not inspected (registration)."
+
+- id: iso13528
+  cat: F
+  title: "ISO 13528: Statistical methods for use in proficiency testing by interlaboratory comparison"
+  authors: "International Organization for Standardization"
+  kind: standard
+  access: restricted
+  supports: "Normalised error E_n = (x_m - x_p)/sqrt(U_m^2 + U_p^2), |E_n| <= 1 (D11 §5)."
+  limits: "Standard text not inspected; definition as commonly reproduced."
+
+# ---------------------------------------------------------------------------
+# Sources cited in the user's input research file, not re-verified here
+# ---------------------------------------------------------------------------
+- id: input_research_file
+  cat: F
+  title: "CMOS_multiplier_energy_calculation_sources.md (input research file supplied with the brief)"
+  authors: "supplied by the user"
+  date: 2026-10-10
+  kind: secondary
+  access: file
+  supports: "Pointers to Liberty/OpenSTA conventions, published energy benchmarks, OpenRCX accuracy, thermal references; items marked [via secondary] or unverified there are treated as such here."
+
+- id: hir2023_thermal
+  cat: H
+  title: "IEEE Heterogeneous Integration Roadmap 2023, Chapter 20 (Thermal)"
+  authors: "IEEE Electronics Packaging Society"
+  date: 2023
+  url: https://eps.ieee.org/
+  kind: secondary
+  access: input-file
+  supports: "Air-cooled heat sinks remove about 40-53 W/cm^2 at a 45-50 C budget (D9 context)."
+
+- id: capbench_arxiv
+  cat: F
+  title: "CapBench (arXiv 2604.11202): extraction accuracy of open-source tools including OpenRCX on Sky130HD"
+  authors: "see arXiv 2604.11202"
+  date: 2026
+  url: https://arxiv.org/abs/2604.11202
+  kind: secondary
+  access: input-file
+  supports: "Default OpenRCX on Sky130HD: total net capacitance error close to 20 % vs a field solver."
+
+- id: stillmaker2017
+  cat: D
+  title: "Scaling equations for the accurate prediction of CMOS device performance from 180 nm to 7 nm"
+  authors: "A. Stillmaker, B. Baas"
+  venue: "Integration, the VLSI Journal 58, 74-81"
+  date: 2017
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Polynomial fits of delay, energy and power vs node from HSPICE with PTM/ITRS models (FO4-based, no wires); the reason this project does not scale published results to SKY130."
+  limits: "Full text not opened; found via the input research file."
+
+- id: published_mac_energies
+  cat: G
+  title: "Published per-operation energies listed in the input research file (Jouppi et al. ISCA 2021; Pedram et al. arXiv 1602.04183; Accelergy-Aladdin tables; Johnson arXiv 1811.01721; Carbognani et al. 2008; Zimmer et al. JSSC 2020; TinyTapeout ttsky25a #293)"
+  authors: "various"
+  kind: secondary
+  access: input-file
+  supports: "Context for the ~3x spread of published multiplier/MAC energies at a given node; not used numerically."

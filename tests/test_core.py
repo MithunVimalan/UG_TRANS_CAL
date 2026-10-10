@@ -232,3 +232,21 @@ def test_uniform_flux_disk_spreading_by_quadrature():
     mean_phi = sum(phi_at(r) * 2 * math.pi * r * (a / nr) for r in rs) / (math.pi * a * a)
     T_m = q_ / (2 * math.pi * k) * mean_phi
     assert T_m / P == pytest.approx(8 / (3 * math.pi ** 2 * k * a), rel=2e-3)
+
+
+# ------------------------------------------------------------ worked example
+def test_worked_example_runs():
+    """examples/mac_envelope_example.py: lineage, class-I refusal and the stored headline numbers."""
+    import importlib.util
+    path = os.path.join(os.path.dirname(__file__), "..", "examples", "mac_envelope_example.py")
+    spec_ = importlib.util.spec_from_file_location("mac_envelope_example", path)
+    mod = importlib.util.module_from_spec(spec_)
+    spec_.loader.exec_module(mod)
+    P = mod.build_inputs()
+    out, metrics = mod.envelope(P)
+    assert out["P_total"].value.to("W") == pytest.approx(5.603e-12 * 145e6 * 1000 + 5680e-9 * 1000, rel=1e-9)
+    assert out["T_j"].value.to("K") == pytest.approx(298.15 + 30 * out["P_total"].value.to("W"), rel=1e-12)
+    assert metrics["TOPS_per_W"] == pytest.approx(2 / 5.603, rel=1e-9)
+    assert set(out["T_j"].input_classes()) == {"C", "E", "S"}
+    with pytest.raises(MissingParameter):
+        P["E_M_tree"].require("clock-tree energy")

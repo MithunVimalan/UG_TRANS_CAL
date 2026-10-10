@@ -18,6 +18,8 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, ROOT)
 RES = os.path.join(ROOT, "results")
 
+from ugcal.switching import fit_alpha_power  # noqa: E402
+
 
 def rd(path):
     p = os.path.join(RES, path)
@@ -108,8 +110,21 @@ def t_vdd_sweep():
                         g(float(r["E_per_transition_fJ"]) * float(r["fo4_ps"]) * 1e-3)])
     if not out:
         return None
-    return md(["T (°C)", "V_DD (V)", "FO4 delay (ps)", "E per FO4 transition (fJ)", "inv_1 leakage (pW)",
+    text = md(["T (°C)", "V_DD (V)", "FO4 delay (ps)", "E per FO4 transition (fJ)", "inv_1 leakage (pW)",
                "E·t (fJ·ns)"], out)
+    # alpha-power-law fit (Sakurai-Newton) on the strong-inversion part only, used for interpolation
+    fits = []
+    for T in ("25", "100"):
+        rows = [r for r in (rd(f"spice/vdd_sweep_tt_{T}C.csv") or []) if float(r["VDD_V"]) >= 1.0 - 1e-9]
+        if len(rows) >= 4:
+            fit = fit_alpha_power([float(r["VDD_V"]) for r in rows], [float(r["fo4_ps"]) * 1e-12 for r in rows])
+            fits.append(f"{T} °C: V_t = {fit['Vt']:.3f} V, α = {fit['alpha']:.2f}, "
+                        f"rms log error {fit['rms_log_err']:.3f} ({len(rows)} points, {min(float(r['VDD_V']) for r in rows):g}–"
+                        f"{max(float(r['VDD_V']) for r in rows):g} V)")
+    if fits:
+        text += ("\n\nAlpha-power-law fit $t_{FO4} = kV/(V-V_t)^\\alpha$ to the FO4 delay for V_DD ≥ 1.0 V "
+                 "(`ugcal.switching.fit_alpha_power`, class E; for interpolation only): " + "; ".join(fits) + ".")
+    return text
 
 
 def t_mep():
@@ -139,7 +154,9 @@ def t_mep():
             pts = mep_model(rows, Ld, 1.0, n_eq, n_leak)
             best = min(pts, key=lambda p: p[1])
             e18 = [p for p in pts if abs(p[0] - 1.8) < 1e-6][0]
-            out.append([T, vname, g(Ld), g(n_eq), g(e18[1] * 1e15, 4), g(best[0]), g(best[1] * 1e15, 4),
+            # a minimum at the lowest simulated supply is a bound, not an optimum
+            vopt = ("≤ " if best[0] == min(p[0] for p in pts) else "") + g(best[0])
+            out.append([T, vname, g(Ld), g(n_eq), g(e18[1] * 1e15, 4), vopt, g(best[1] * 1e15, 4),
                         g(e18[1] / best[1]), g(best[4] * 1e9, 4)])
     return md(["T (°C)", "MAC variant", "logic depth (FO4 at 1.8 V)", "equivalent FO4 transitions/MAC",
                "model E/MAC at 1.8 V (fJ)", "V_opt (V)", "E/MAC at V_opt (fJ)", "gain vs 1.8 V", "cycle time at V_opt (ns)"],

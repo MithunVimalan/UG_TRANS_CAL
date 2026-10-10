@@ -71,7 +71,7 @@ Energy per MAC under three data distributions (fJ; zero-delay and inertial):
 <!-- END:mac_dists -->
 
 ### Findings
-1. **Registers and clock are 49–64 % of the energy of the three most efficient MACs** (37 % for fused Baugh–Wooley). A dfxtp_1 costs ≈60 fJ per cycle even when its data does not change, mostly clock-pin internal energy. In the lowest-energy variant, the 17 operand registers (1.03 pJ) and 22 accumulator registers (1.17 pJ) together cost more than its whole multiplier datapath (partial products + tree + CPA = 1.79 pJ). A "multiplier energy" quoted without registers understates the MAC by 2.8× (separate BW + ripple) to 3.3× (carry-save BW).
+1. **Registers and their clock pins are 49 % and 64 % of the energy of the two lowest-energy MACs** (separate BW + ripple; carry-save BW + KS), and 23–55 % for the other five variants. A dfxtp_1 costs ≈60 fJ per cycle even when its data does not change, mostly clock-pin internal energy. In the lowest-energy variant, the 17 operand registers (1.03 pJ) and 22 accumulator registers (1.17 pJ) together cost more than its whole multiplier datapath (partial products + tree + CPA = 1.79 pJ). A "multiplier energy" quoted without registers understates the MAC by 2.8× (separate BW + ripple) to 3.3× (carry-save BW).
 2. **The accumulator adder is where Kogge–Stone hurts.** In the `separate` MACs, the 22-bit KS accumulation adder costs 4.2–4.4 pJ with glitches, more than the multiplier. A ripple accumulation adder costs 0.75 pJ but makes the loop slow (104 MHz tt, 47 MHz ss/100 °C).
 3. **Carry-save accumulation gives the best energy–delay trade-off.** `csa_acc_bw_kogge_stone` reaches 307 MHz (tt) and 145 MHz (ss/100 °C) at 5.6 pJ/MAC. That is 13 % more energy than the slowest variant (separate BW + ripple) for 2.95× its frequency. Its cost is 22 extra flip-flops (≈1.1 pJ) and 13 % more cell area than the separate BW + KS MAC (71 % more than the ripple variant).
 4. **Baugh–Wooley beats Booth here as well**, consistent with D7: −12 to −23 % energy at equal structure.
@@ -136,6 +136,22 @@ Inputs and their classes:
 **Reading the table.** Without reuse (N = 1, i.e. every operand fetched from SRAM for every MAC), memory traffic roughly triples the energy per MAC (SRAM share 63–66 %). With reuse, the SRAM share falls to 12–14 % at N = 16 and ≈6 % at N = 64, and forwarding wires stay at 1–4 % of the total. So in SKY130 at 1.8 V the arithmetic and its registers dominate once the dataflow reuses operands. Published advanced-node accelerators report the opposite balance: Eyeriss (65 nm) organises its whole design around minimising data movement (Chen et al. 2017), and Horowitz's 45 nm table puts memory accesses orders of magnitude above an 8-bit multiply (via secondary sources). That is a node- and memory-dependent conclusion. It should be recomputed for any target technology with characterised memory energies, not assumed.
 
 **Not modelled (class I until physical design):** clock-tree wiring and buffers; global operand broadcast at the array edges; DRAM/off-chip I/O; power-delivery losses (IR drop, regulator efficiency); control and address generation.
+
+### 5.1 A like-for-like post-route reference in the same process (third-party, class G, not peer-reviewed)
+
+The input research file pointed to an open SKY130 design that matches this MAC's specification. It was inspected here at a pinned commit (`github.com/nivi9944/systolic-array` @507ac739; `results/power_measured.json`, README, `tb/Makefile`). It is an 8×8 output-stationary systolic array of signed int8 MACs with 22-bit accumulators. It was implemented with LibreLane to a DRC- and LVS-clean layout, with timing met at 90.9 MHz on all 9 corners. Its power was computed with OpenSTA on the routed netlist with extracted parasitics, at tt, 25 °C, 1.80 V, with uniform random int8 data and back-to-back K = 64 jobs.
+
+| Quantity | Third-party post-route array (64 PEs) | This project, pre-layout single MAC |
+|---|---|---|
+| Energy per MAC | **15.92 pJ** (92.6 mW at 90.9 MHz × 64) | 4.05–6.11 pJ (zero-delay), 4.97–11.1 pJ (inertial) |
+| Sequential / combinational / clock network, per MAC | 4.42 / 8.73 / 2.78 pJ | registers 2.1–3.4 pJ incl. clock pins; clock tree not modelled |
+| Activity | gate-level simulation compiled with `-DFUNCTIONAL -DUNIT_DELAY=#0`, i.e. **zero-delay, no glitches** | zero / inertial / transport |
+| Wires, clock tree, buffers, control, skew logic | included | absent |
+| Per-PE registers | operand copy + forwarding + product register + accumulator | operand + accumulator registers |
+
+On the same activity basis (zero delay), the post-route array costs **2.6–3.9×** this project's pre-layout MACs. That gap is the measured size of everything this project marks class I or H for arrays: wires, the clock tree (17.5 % of that chip's power), extra pipeline registers, control, and timing repair. Their combinational energy per MAC (8.7 pJ) is about 5× our zero-delay combinational energy for the ripple variant (≈1.7 pJ). This points at wiring, buffering and the array control and drain multiplexers rather than at the arithmetic. Their netlist was not re-analysed here, so the split is not established. Because their activity excludes glitches, their number would rise further with timing-annotated activity: §3 puts glitches at +6 % to +82 % for these MAC structures (inertial vs zero delay).
+
+**Use in the envelope.** A pre-layout PE energy should be multiplied by an implementation factor of ≈3 (range 2.6–3.9, from one design, class G external) before it is used for an array in SKY130. Glitch-aware activity then adds the inertial/zero factor of the chosen structure. This is an empirical factor from one implementation, not a bound.
 
 ## 6. Algorithmic transformations change the MAC count, not the MAC cost
 
