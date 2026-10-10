@@ -1,0 +1,4 @@
+level,item,E_J,cls,applies,E_hi_J
+1 fundamental,"Landauer, MAC operands discarded (16 bits)",4.593566216125958e-20,D (exact information content x kT ln2),absolute floor for irreversible MAC,
+1 fundamental,"Landauer, signed 8x8 multiply output-only (3.144 bits)",9.026357614687508e-21,D,absolute floor for irreversible multiply,
+1 model,"gate-level irreversible model, 8x8 multipliers (111-265 bits)",3.1867865624373833e-19,E,if every gate erases its inputs,7.608094045458618e-19
