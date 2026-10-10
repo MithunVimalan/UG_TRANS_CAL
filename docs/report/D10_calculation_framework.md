@@ -140,7 +140,7 @@ python3 tools/make_report_tables.py
 python3 -m pytest -q
 ```
 
-Approximate cost on the 4-core container used: device and cell scripts take minutes; each gate-level study takes minutes to tens of minutes; each 8×8 whole-multiplier transistor-level run takes 15–40 min per design with 2 ngspice threads (D7 §7 lists the wall times). Environment variables: `PDK_ROOT`, `UGCAL_CELL_VIEW` (schematic | extracted | extracted_lod; default extracted_lod), `UGCAL_NGSPICE_THREADS`.
+Approximate cost on the 4-core container used: device and cell scripts take minutes; each gate-level study takes minutes to tens of minutes; each 8×8 whole-multiplier transistor-level run takes 15–20 min per design with 2 ngspice threads (D7 §7 lists the wall times). Environment variables: `PDK_ROOT`, `UGCAL_CELL_VIEW` (schematic | extracted | extracted_lod; default extracted_lod), `UGCAL_NGSPICE_THREADS`.
 
 ## 7. Extending to another PDK or design
 
