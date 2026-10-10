@@ -130,7 +130,21 @@ Kogge–Stone is the fastest at every width (log₂n levels, fan-out 2) and cost
 The same operand sequence was simulated in ngspice on the full transistor netlist of each multiplier: every cell instantiated from the layout-extracted + LOD view on the foundry BSIM4 cards (1,840–2,618 transistors plus extracted cell parasitics, no inter-cell wiring). The per-cycle supply energy was integrated and every product checked for correctness at the end of its cycle.
 
 <!-- BEGIN:spice_mult -->
+| design | signed/unsigned | cell view | vectors | period (ns) | SPICE E/mult (fJ) | gate zero (fJ) | gate inertial (fJ) | gate transport (fJ) | SPICE/inertial | SPICE/transport | functional errors | SPICE wall time (min) |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| array_rc | u | extracted_lod | 41 | 12 | 3067 | 1281 | 2587 | 5139 | 1.19 | 0.597 | 0 | 19.4 |
+| braun | u | extracted_lod | 31 | 12 | 2629 | 1289 | 2080 | 3945 | 1.26 | 0.666 | 0 | 15.6 |
+| dadda_rca | u | extracted_lod | 31 | 12 | 2153 | 1291 | 1659 | 3436 | 1.3 | 0.627 | 0 | 15.4 |
+| dadda_ks | u | extracted_lod | 31 | 12 | 3429 | 1670 | 2696 | 5766 | 1.27 | 0.595 | 0 | 19.5 |
+| booth4_dadda_ks | s | extracted_lod | 31 | 12 | 5522 | 2085 | 4547 | 1.491e+04 | 1.21 | 0.37 | 0 | 20.3 |
 <!-- END:spice_mult -->
+
+**Reading the table.**
+* Every product was correct at the end of its cycle in SPICE.
+* For every design the transistor-level energy lies **inside the gate-level [inertial, transport] bracket**: SPICE/inertial = 1.19–1.30 and SPICE/transport = 0.37–0.67. Against zero delay, SPICE is 1.7–2.6× higher, so the glitch energy is physical and not an artefact of the gate model.
+* **The inertial model under-estimates absolute energy by 19–30 % but preserves the ranking**: SPICE and inertial gate level order the designs identically (Dadda + ripple < Braun < ripple-carry array < Dadda + KS < Booth + Dadda + KS; Wallace + ripple pending).
+* The gate-level columns here are recomputed on the same 30–40 transitions as SPICE. They differ from the 1 001-vector tables above by sampling (array_rc inertial: 2 587 fJ here vs 2 434 fJ above).
+* Inter-cell wiring is absent in both models.
 
 ## 8. Findings
 

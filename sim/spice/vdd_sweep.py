@@ -53,7 +53,9 @@ def fo4_deck(vdd: float, temp: float, corner: str, period: float, tr: float) -> 
         prev = out
     lines.append(X("term", prev, "nterm", "vdd"))
     tstop = 3 * period
-    lines += [f".tran {min(1e-12, period / 2000):.3e} {tstop:.4e}", ".save v(n2) v(n3) i(Vmeas)", ".control",
+    # print step (= ngspice's maximum internal step) scales with the period so every
+    # supply costs about the same number of steps; edges are refined by truncation-error control
+    lines += [f".tran {period / 40000:.3e} {tstop:.4e}", ".save v(n2) v(n3) i(Vmeas)", ".control",
               "set wr_vecnames", "set wr_singlescale", "run", "wrdata out.txt v(n2) v(n3) i(Vmeas)", ".endc", ".end"]
     return "\n".join(lines) + "\n"
 
@@ -67,10 +69,12 @@ def main():
     a = ap.parse_args()
     ng.CELL_VIEW = a.view
     rows = []
-    for vdd in [float(x) for x in a.vdds.split(",")]:
-        # choose a period long enough for the slow low-voltage delays (iterate)
-        period = 4e-9
-        for _ in range(8):
+    out = os.path.join(ng.repo_root(), "results", "spice", f"vdd_sweep_{a.corner}_{int(a.temp)}C.csv")
+    period = 4e-9
+    for vdd in sorted([float(x) for x in a.vdds.split(",")], reverse=True):
+        # choose a period long enough for the slow low-voltage delays (iterate on a 4^k grid).
+        # Delay grows as V falls, so the search starts from the previous supply's period.
+        for _ in range(10):
             r = ng.run(fo4_deck(vdd, a.temp, a.corner, period, 0.2 * period / 20), ["out.txt"]).vectors
             t, v2, v3, i = r["time"], r["v(n2)"], r["v(n3)"], r["i(vmeas)"]
             half = vdd / 2
@@ -98,12 +102,13 @@ def main():
                    leak_inv_pW=leak * 1e12, sim_period_ns=period * 1e9)
         rows.append(row)
         print(", ".join(f"{k}={v:.4g}" if isinstance(v, float) else f"{k}={v}" for k, v in row.items()), flush=True)
-    out = os.path.join(ng.repo_root(), "results", "spice", f"vdd_sweep_{a.corner}_{int(a.temp)}C.csv")
-    with open(out, "w", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
-        w.writeheader()
-        w.writerows(rows)
-        fh.write(f"# ngspice {ng.ngspice_version()}; FO4 chain of inv_1 ({a.view} view)\n")
+        # rewrite after every point so an interrupted sweep keeps what it has
+        with open(out, "w", newline="") as fh:
+            w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
+            w.writeheader()
+            w.writerows(rows)
+            fh.write(f"# ngspice {ng.ngspice_version()}; FO4 chain of inv_1 ({a.view} view); "
+                     f"print/max step = period/40000\n")
 
 
 if __name__ == "__main__":

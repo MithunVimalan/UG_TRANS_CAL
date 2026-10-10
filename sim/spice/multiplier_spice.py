@@ -44,7 +44,7 @@ def main():
     ng.CELL_VIEW = a.view
     lib = Library(os.path.join(ng.pdk_root(), "sc_hd", "timing", "sky130_fd_sc_hd__tt_025C_1v80.lib"))
     outdir = os.path.join(ng.repo_root(), "results", "spice")
-    summary = []
+    summary = []  # rows also appended to the summary CSV as each design finishes
     for d in a.designs.split(","):
         signed = DESIGNS[d]
         nl = build(d, 8, signed=signed)
@@ -79,18 +79,19 @@ def main():
                    ngspice=r["ngspice"])
         summary.append(row)
         print(", ".join(f"{k}={v:.4g}" if isinstance(v, float) else f"{k}={v}" for k, v in row.items()), flush=True)
+        # append the summary row immediately so an interrupted run keeps finished designs
+        path = os.path.join(outdir, f"multiplier_spice_summary_{a.view}.csv")
+        exists = os.path.exists(path)
+        with open(path, "a", newline="") as fh:
+            w = csv.DictWriter(fh, fieldnames=list(row.keys()))
+            if not exists:
+                w.writeheader()
+            w.writerow(row)
         with open(os.path.join(outdir, f"multiplier_spice_{d}_{a.view}.csv"), "w", newline="") as fh:
             w = csv.writer(fh)
             w.writerow(["cycle", "a", "b", "E_supply_fJ", "E_input_sources_fJ"])
             for k, (e, ei) in enumerate(zip(E, r["E_in_cycle"]), start=1):
                 w.writerow([k, vecs[k]["a"], vecs[k]["b"], f"{e * 1e15:.4f}", f"{ei * 1e15:.4f}"])
-    path = os.path.join(outdir, f"multiplier_spice_summary_{a.view}.csv")
-    exists = os.path.exists(path)
-    with open(path, "a", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=list(summary[0].keys()))
-        if not exists:
-            w.writeheader()
-        w.writerows(summary)
 
 
 if __name__ == "__main__":

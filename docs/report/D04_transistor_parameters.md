@@ -107,8 +107,8 @@ FO4 chain of layout-extracted inv_1 cells (`sim/spice/vdd_sweep.py`). Below 1.28
 <!-- BEGIN:mep -->
 | T (°C) | MAC variant | logic depth (FO4 at 1.8 V) | equivalent FO4 transitions/MAC | model E/MAC at 1.8 V (fJ) | V_opt (V) | E/MAC at V_opt (fJ) | gain vs 1.8 V | cycle time at V_opt (ns) |
 |---|---|---|---|---|---|---|---|---|
-| 25 | csa_acc_bw_kogge_stone | 38.6 | -301 | 5603 | 0.6 | 476.4 | 11.8 | 3249 |
-| 25 | separate_bw_ripple_accripple | 114 | -267 | 4967 | 0.6 | 422.5 | 11.8 | 9586 |
+| 25 | csa_acc_bw_kogge_stone | 38.6 | -301 | 5603 | ≤ 0.6 | 476.4 | 11.8 | 3249 |
+| 25 | separate_bw_ripple_accripple | 114 | -267 | 4967 | ≤ 0.6 | 422.5 | 11.8 | 9586 |
 <!-- END:mep -->
 
 ## 5. Leakage: the two foundry data sets disagree at high temperature

@@ -245,11 +245,13 @@ def t_spice_mult():
     if not rows:
         return None
     out = []
+    order = ["array_rc", "braun", "wallace_rca", "dadda_rca", "dadda_ks", "booth4_dadda_ks"]
+    rows.sort(key=lambda r: order.index(r["design"]) if r["design"] in order else 99)
     for r in rows:
-        out.append([r["design"], r["view"], r["nvec"], g(r["period_ns"]), g(r["spice_E_fJ"], 4), g(r["gate_zero_fJ"], 4),
+        out.append([r["design"], "s" if r["signed"] == "True" else "u", r["view"], r["nvec"], g(r["period_ns"]), g(r["spice_E_fJ"], 4), g(r["gate_zero_fJ"], 4),
                     g(r["gate_inertial_fJ"], 4), g(r["gate_transport_fJ"], 4), g(r["spice_over_inertial"]),
                     g(float(r["spice_E_fJ"]) / float(r["gate_transport_fJ"])), r["functional_errors"], g(float(r["wall_s"]) / 60, 3)])
-    return md(["design", "cell view", "vectors", "period (ns)", "SPICE E/mult (fJ)", "gate zero (fJ)", "gate inertial (fJ)",
+    return md(["design", "signed/unsigned", "cell view", "vectors", "period (ns)", "SPICE E/mult (fJ)", "gate zero (fJ)", "gate inertial (fJ)",
                "gate transport (fJ)", "SPICE/inertial", "SPICE/transport", "functional errors", "SPICE wall time (min)"], out)
 
 

@@ -2,7 +2,7 @@
 
 ## 1. What it is and the rules it enforces
 
-`ugcal/` is a dependency-free Python package (standard library only; tested with Python 3.13; the tests need `pytest`, and one quadrature test needs `numpy`). Simulation drivers in `sim/` call the open tools ngspice, Magic, Yosys and OpenSTA. Every number in D3–D9 is produced by a script in this repository from files fetched at pinned commits. None was typed into the report by hand: report tables sit between `<!-- BEGIN:x -->`/`<!-- END:x -->` markers and are rewritten by `tools/make_report_tables.py`.
+`ugcal/` is a dependency-free Python package (standard library only; tested with Python 3.13; the tests need `pytest`, and one quadrature test needs `numpy`). Simulation drivers in `sim/` call the open tools ngspice, Magic, Yosys and OpenSTA. Every number in D3–D9 is produced by a script in this repository from files fetched at pinned commits. The report's data tables sit between HTML-comment markers (`BEGIN:` and `END:` followed by a table name) and are rewritten by `tools/make_report_tables.py`, so they cannot drift from the result files. Numbers quoted in the prose were transcribed from those tables and CSVs and re-checked (D12 §7).
 
 Three rules from the brief are enforced in code, not only by convention:
 
