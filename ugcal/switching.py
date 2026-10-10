@@ -73,9 +73,9 @@ def energy_dissipated_per_transition(C: Input, V: Input) -> Result:
 
 
 def dynamic_power(C: Input, V: Input, act: Activity) -> Result:
-    p = 0.5 * val(C) * val(V) ** 2 * act.density_per_s
     a = Param("activity density", q(act.density_per_s, "1/s"), Cls.S, source="design-spec", unit="1/s",
               note="transitions per second, both edges")
+    p = 0.5 * val(C) * val(V) ** 2 * val(a)
     return Result("P_dyn", p, Cls.E, "1/2 C V^2 density  (= alpha01 C V^2 f)", [C, V, a],
                   assumptions=["full-swing transitions", "C is the total switched capacitance of the node"],
                   unit="W")

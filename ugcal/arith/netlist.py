@@ -43,6 +43,15 @@ class Gate:
     outs: Tuple[int, ...]
     group: str
     name: str
+    # for kind == "CELL" (any Liberty cell, e.g. imported from a synthesised
+    # netlist): library cell name without prefix, pin names and the output
+    # functions as Python expressions over the input pin names (see
+    # ugcal.gatesim.liberty_to_python); M is the all-ones mask
+    cell: Optional[str] = None
+    ip: Tuple[str, ...] = ()
+    op: Tuple[str, ...] = ()
+    fexpr: Tuple[str, ...] = ()
+    seq: bool = False
 
 
 @dataclass
@@ -70,6 +79,16 @@ class Netlist:
 
     def set_output(self, bus: str, nets: Sequence[int]) -> None:
         self.outputs[bus] = list(nets)
+
+    def cell_gate(self, cell: str, ip: Sequence[str], op: Sequence[str], fexpr: Sequence[str],
+                  ins: Sequence[int], outs: Sequence[int], group: str, name: str, seq: bool = False) -> int:
+        """Add a generic Liberty cell with pre-allocated output nets."""
+        g = Gate("CELL", tuple(ins), tuple(outs), group, name, cell=cell, ip=tuple(ip), op=tuple(op),
+                 fexpr=tuple(fexpr), seq=seq)
+        for o in outs:
+            self._driver[o] = len(self.gates)
+        self.gates.append(g)
+        return len(self.gates) - 1
 
     def gate(self, kind: str, ins: Sequence[int], group: str) -> Tuple[int, ...]:
         nin, nout = KINDS[kind]
@@ -219,11 +238,11 @@ class Netlist:
         indeg = [0] * len(self.gates)
         fanout: Dict[int, List[int]] = defaultdict(list)
         for gi, g in enumerate(self.gates):
-            if g.kind == "DFF":
+            if g.kind == "DFF" or g.seq:
                 continue
             for n in g.ins:
                 d = self._driver.get(n)
-                if d is not None and self.gates[d].kind != "DFF":
+                if d is not None and not (self.gates[d].kind == "DFF" or self.gates[d].seq):
                     indeg[gi] += 1
                     fanout[d].append(gi)
         order = [gi for gi in range(len(self.gates)) if indeg[gi] == 0]
@@ -354,6 +373,10 @@ class Netlist:
                 r = (x[0] ^ x[1], x[0] & x[1])
             elif k == "FA":
                 r = (x[0] ^ x[1] ^ x[2], (x[0] & x[1]) | (x[0] & x[2]) | (x[1] & x[2]))
+            elif k == "CELL":
+                env = dict(zip(g.ip, x))
+                env["M"] = mask
+                r = tuple(eval(e, {"__builtins__": {}}, env) for e in g.fexpr)
             else:
                 raise ValueError(k)
             for o, val in zip(g.outs, r):

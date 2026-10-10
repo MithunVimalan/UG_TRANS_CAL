@@ -22,7 +22,7 @@ SPICEINIT = """* written by ugcal.sim.ngspice (copied from the SKY130 fd_pr mode
 set ngbehavior=hsa
 set skywaterpdk
 set ng_nomodcheck
-set num_threads=1
+set num_threads={threads}
 option noinit
 option klu
 """
@@ -49,13 +49,49 @@ def full_lib_path() -> str:
     return os.path.join(pdk_root(), "fd_pr", "models", "sky130.lib.spice")
 
 
-def cell_netlist(cell: str) -> str:
+# Which transistor-level view of the standard cells to use:
+#   'schematic'  cells/<cell>/sky130_fd_sc_hd__<cell>.spice from the library
+#                repository (W/L only: no junction area, no wiring capacitance)
+#   'extracted'  build/cells_ext/<cell>.spice produced by sim/pdk/extract_cells.py
+#                from the foundry GDS (AD/AS/PD/PS + all parasitic capacitances)
+#   'extracted_lod' as 'extracted' plus sa/sb STI-stress distances estimated
+#                as AS/W and AD/W (sensitivity test only; see extract_cells.py)
+CELL_VIEW = os.environ.get("UGCAL_CELL_VIEW", "schematic")
+
+
+def cell_netlist(cell: str, view: Optional[str] = None) -> str:
     """Path of a sky130_fd_sc_hd cell transistor netlist, e.g. 'inv_1'."""
-    base = cell.rsplit("_", 1)[0]
-    p = os.path.join(pdk_root(), "sc_hd", "cells", base, f"sky130_fd_sc_hd__{cell}.spice")
+    view = view or CELL_VIEW
+    if view == "schematic":
+        base = cell.rsplit("_", 1)[0]
+        p = os.path.join(pdk_root(), "sc_hd", "cells", base, f"sky130_fd_sc_hd__{cell}.spice")
+    elif view in ("extracted", "extracted_lod"):
+        p = os.path.join(repo_root(), "build", "cells_ext", f"{cell}.spice")
+        if view == "extracted_lod":
+            p = _lod_variant(p)
+    else:
+        raise ValueError(view)
     if not os.path.exists(p):
         raise FileNotFoundError(p)
     return p
+
+
+def _lod_variant(path: str) -> str:
+    out = path.replace(".spice", ".lod.spice")
+    if os.path.exists(out) and os.path.getmtime(out) >= os.path.getmtime(path):
+        return out
+    lines = []
+    for line in open(path):
+        if line.startswith("X") and "sky130_fd_pr__" in line and " w=" in line:
+            kv = dict(t.split("=", 1) for t in line.split() if "=" in t)
+            w = float(kv["w"])
+            sa = float(kv.get("as", 0)) / w
+            sb = float(kv.get("ad", 0)) / w
+            line = line.rstrip("\n") + f" sa={sa:.4g} sb={sb:.4g}\n"
+        lines.append(line)
+    with open(out, "w") as fh:
+        fh.writelines(lines)
+    return out
 
 
 _VERSION_CACHE: Optional[str] = None
@@ -122,7 +158,7 @@ def run(deck: str, wrdata_files: Optional[List[str]] = None, timeout: float = 12
     work = keep_dir or tempfile.mkdtemp(prefix="ugcal_ngspice_")
     os.makedirs(work, exist_ok=True)
     with open(os.path.join(work, ".spiceinit"), "w") as fh:
-        fh.write(SPICEINIT)
+        fh.write(SPICEINIT.format(threads=int(os.environ.get("UGCAL_NGSPICE_THREADS", "1"))))
     deck_path = os.path.join(work, "deck.sp")
     with open(deck_path, "w") as fh:
         fh.write(deck)

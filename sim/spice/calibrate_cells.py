@@ -46,7 +46,7 @@ def decode(corner: str):
     return proc, (-1 if neg else 1) * float(t), float(f"{vi}.{vf}")
 
 
-def characterise(cell: str, inpin: str, outpin: str, libcorner: str, inverting: bool):
+def characterise(cell: str, inpin: str, outpin: str, libcorner: str, inverting: bool, leakage: bool = True):
     lib = Library(lib_path(libcorner))
     proc, temp, vdd = decode(libcorner)
     assert abs(vdd - lib.op_voltage) < 1e-9 and abs(temp - lib.op_temperature) < 1e-9
@@ -140,7 +140,7 @@ def characterise(cell: str, inpin: str, outpin: str, libcorner: str, inverting: 
     # leakage per state
     leak_rows = []
     c = lib.cell(name)
-    for when, val in c.leakage_states:
+    for when, val in (c.leakage_states if leakage else []):
         state = {inpin: (0.0 if when.startswith("!") else vdd)}
         p = cc.static_power(cell, vdd, temp, proc, state)
         leak_rows.append(dict(cell=cell, libcorner=libcorner, when=when, lib_leak_nW=val * lib.units.leakage * 1e9,
@@ -156,16 +156,22 @@ def main():
     ap.add_argument("--outpin", default="Y")
     ap.add_argument("--noninverting", action="store_true")
     ap.add_argument("--corners", default="tt_025C_1v80,tt_100C_1v80,ss_100C_1v60,ff_n40C_1v95")
+    ap.add_argument("--view", default="schematic", choices=["schematic", "extracted", "extracted_lod"])
+    ap.add_argument("--no-leakage", action="store_true")
     a = ap.parse_args()
+    ng.CELL_VIEW = a.view
     outdir = os.path.join(ng.repo_root(), "results", "spice")
     os.makedirs(outdir, exist_ok=True)
     for corner in a.corners.split(","):
-        rows, leak = characterise(a.cell, a.inpin, a.outpin, corner, not a.noninverting)
-        with open(os.path.join(outdir, f"calibration_{a.cell}_{corner}.csv"), "w", newline="") as fh:
+        rows, leak = characterise(a.cell, a.inpin, a.outpin, corner, not a.noninverting, not a.no_leakage)
+        suffix = "" if a.view == "schematic" else f"_{a.view}"
+        with open(os.path.join(outdir, f"calibration_{a.cell}_{corner}{suffix}.csv"), "w", newline="") as fh:
             w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
             w.writeheader()
             w.writerows(rows)
-        with open(os.path.join(outdir, f"calibration_{a.cell}_{corner}_leakage.csv"), "w", newline="") as fh:
+        if not leak:
+            continue
+        with open(os.path.join(outdir, f"calibration_{a.cell}_{corner}{suffix}_leakage.csv"), "w", newline="") as fh:
             w = csv.DictWriter(fh, fieldnames=list(leak[0].keys()))
             w.writeheader()
             w.writerows(leak)

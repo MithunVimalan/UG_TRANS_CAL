@@ -37,10 +37,17 @@ CELLMAP: Dict[str, Tuple[str, Tuple[str, ...], Tuple[str, ...]]] = {
 }
 
 
+def cellinfo(g) -> Tuple[str, Tuple[str, ...], Tuple[str, ...]]:
+    """(cell name without prefix, input pins, output pins) of a gate."""
+    if g.kind == "CELL":
+        return g.cell, g.ip, g.op
+    return CELLMAP[g.kind]
+
+
 def cell_counts(nl: Netlist) -> Dict[str, int]:
     out: Dict[str, int] = {}
     for g in nl.gates:
-        c = PREFIX + CELLMAP[g.kind][0]
+        c = PREFIX + cellinfo(g)[0]
         out[c] = out.get(c, 0) + 1
     return out
 
@@ -89,7 +96,7 @@ def emit(nl: Netlist, module: str = None, clock: str = "clk") -> str:
         return netname[n]
 
     for g in nl.gates:
-        cell, ip, op = CELLMAP[g.kind]
+        cell, ip, op = cellinfo(g)
         conns = []
         if g.kind == "DFF":
             conns.append(f".CLK({clock})")

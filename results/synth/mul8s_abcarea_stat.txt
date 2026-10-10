@@ -1,0 +1,50 @@
+
+7. Printing statistics.
+
+=== mul8s ===
+
+   Number of wires:                283
+   Number of wire bits:            312
+   Number of public wires:           3
+   Number of public wire bits:      32
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:                296
+     sky130_fd_sc_hd__a2111oi_0      1
+     sky130_fd_sc_hd__a21boi_0       2
+     sky130_fd_sc_hd__a21o_1         2
+     sky130_fd_sc_hd__a21oi_1        9
+     sky130_fd_sc_hd__a22o_1         1
+     sky130_fd_sc_hd__a22oi_1        4
+     sky130_fd_sc_hd__a31o_1         1
+     sky130_fd_sc_hd__a31oi_1        3
+     sky130_fd_sc_hd__and2_0        12
+     sky130_fd_sc_hd__and3_1         3
+     sky130_fd_sc_hd__and4_1         4
+     sky130_fd_sc_hd__inv_1          3
+     sky130_fd_sc_hd__maj3_1        32
+     sky130_fd_sc_hd__nand2_1       51
+     sky130_fd_sc_hd__nand2b_1       5
+     sky130_fd_sc_hd__nand3_1        2
+     sky130_fd_sc_hd__nand4_1        1
+     sky130_fd_sc_hd__nor2_1        21
+     sky130_fd_sc_hd__nor2b_1       11
+     sky130_fd_sc_hd__nor3_1         3
+     sky130_fd_sc_hd__o21a_1         2
+     sky130_fd_sc_hd__o21ai_0       18
+     sky130_fd_sc_hd__o21ba_1        1
+     sky130_fd_sc_hd__or2_0          4
+     sky130_fd_sc_hd__or3_1          8
+     sky130_fd_sc_hd__or3b_1         1
+     sky130_fd_sc_hd__or4b_1         1
+     sky130_fd_sc_hd__xnor2_1       39
+     sky130_fd_sc_hd__xnor3_1       15
+     sky130_fd_sc_hd__xor2_1        25
+     sky130_fd_sc_hd__xor3_1        11
+
+   Chip area for module '\mul8s': 2381.033600
+
+
+# Yosys 0.33 (git sha1 2584903a060)
+# script: read_verilog /home/user/UG_TRANS_CAL/results/synth/mul8s_rtl.v; synth -top mul8s -flatten; abc -liberty /home/user/UG_TRANS_CAL/build/sky130_fd_sc_hd__tt_025C_1v80.synth.lib; opt_clean -purge; setundef -zero; opt_clean; tee -o /home/user/UG_TRANS_CAL/results/synth/mul8s_abcarea_stat.txt stat -liberty /home/user/UG_TRANS_CAL/build/sky130_fd_sc_hd__tt_025C_1v80.synth.lib; write_verilog -noattr -noexpr -nohex -nodec /home/user/UG_TRANS_CAL/results/synth/mul8s_abcarea.v

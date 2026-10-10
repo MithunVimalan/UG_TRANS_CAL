@@ -508,3 +508,26 @@ class Library:
             else:
                 raise ValueError(f"unsupported power table variable {v}")
         return t.lookup(**kw) * self.units.energy
+
+
+def write_filtered(src_path: str, dst_path: str, exclude_globs) -> int:
+    """Write a copy of a Liberty file without the cells matching any glob.
+
+    Used to apply a flow's 'do not use for synthesis' list to tools that lack
+    a dont_use option (e.g. Yosys 0.33 abc).  Returns the number of cells removed.
+    """
+    import fnmatch
+    with open(src_path) as fh:
+        text = fh.read()
+    spans = Library._index_cells(text)
+    drop = sorted((s, e) for name, (s, e) in spans.items()
+                  if any(fnmatch.fnmatch(name, g) for g in exclude_globs))
+    out = []
+    pos = 0
+    for s, e in drop:
+        out.append(text[pos:s])
+        pos = e
+    out.append(text[pos:])
+    with open(dst_path, "w") as fh:
+        fh.write("".join(out))
+    return len(drop)

@@ -114,3 +114,152 @@
   kind: peer-reviewed-theoretical
   access: search
   supports: "Thermodynamically consistent noise model of MOS transistors in subthreshold; stochastic CMOS inverter deviates from deterministic behaviour near kT-scale energies."
+
+- id: margolus1998
+  title: "The maximum speed of dynamical evolution"
+  authors: "N. Margolus, L. B. Levitin"
+  venue: "Physica D 120(1-2), 188-195"
+  date: 1998
+  doi: 10.1016/S0167-2789(98)00054-2
+  url: https://arxiv.org/abs/quant-ph/9710043
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Minimum time to an orthogonal state t >= h/(4E) with E the mean energy above the ground state; at most ~3e33 operations per second per joule."
+
+- id: meindl2000
+  title: "The fundamental limit on binary switching energy for terascale integration (TSI)"
+  authors: "J. D. Meindl, J. A. Davis"
+  venue: "IEEE Journal of Solid-State Circuits 35(10), 1515-1516"
+  date: 2000
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "E_min = kT ln2 for a binary transition (with error probability 1/2 at the limit, per contemporaneous press release quoting the authors); the 2 ln2 kT/q minimum supply of an ideal CMOS inverter is attributed to this line of work by secondary sources."
+  limits: "Full text not inspected; the 2 ln2 kT/q value is carried as 'via secondary'."
+
+- id: zhirnov2003
+  title: "Limits to binary logic switch scaling - a gedanken model"
+  authors: "V. V. Zhirnov, R. K. Cavin, J. A. Hutchby, G. I. Bourianoff"
+  venue: "Proceedings of the IEEE 91(11), 1934-1939"
+  date: 2003
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Barrier-based binary switch model: distinguishability requires barrier E_b >~ kT ln(1/p); minimum-energy irreversible switch arguments."
+  limits: "Contested by Lent and co-workers (adiabatic switching can dissipate < kT ln2); see 2007 comment/reply."
+
+- id: swanson1972
+  title: "Ion-Implanted Complementary MOS Transistors in Low-Voltage Circuits"
+  authors: "R. M. Swanson, J. D. Meindl"
+  venue: "IEEE Journal of Solid-State Circuits SC-7(2), 146-153"
+  date: 1972-04
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Weak-inversion analysis of the CMOS inverter: smallest functional supply ~8 kT/q (abstract)."
+
+- id: kish2002
+  title: "End of Moore's law: thermal (noise) death of integration in micro and nano electronics"
+  authors: "L. B. Kish"
+  venue: "Physics Letters A 305, 144-149"
+  date: 2002-12
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Thermal noise on shrinking node capacitances combined with falling supply voltage raises bit-error rates; motivates kT/C-based error estimates."
+
+# ---------------------------------------------------------------------------
+# B. Device physics and compact models
+# ---------------------------------------------------------------------------
+- id: roy2003
+  title: "Leakage Current Mechanisms and Leakage Reduction Techniques in Deep-Submicrometer CMOS Circuits"
+  authors: "K. Roy, S. Mukhopadhyay, H. Mahmoodi-Meimand"
+  venue: "Proceedings of the IEEE 91(2), 305-327"
+  date: 2003
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Taxonomy of leakage: weak inversion (subthreshold), DIBL, GIDL, gate-oxide tunnelling, junction leakage."
+
+- id: ortizconde2002
+  title: "A review of recent MOSFET threshold voltage extraction methods"
+  authors: "A. Ortiz-Conde, F. J. Garcia Sanchez, J. J. Liou, A. Cerdeira, M. Estrada, Y. Yue"
+  venue: "Microelectronics Reliability 42(4-5), 583-596"
+  date: 2002
+  doi: 10.1016/S0026-2714(02)00027-6
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Definitions of constant-current and maximum-gm linear-extrapolation threshold extraction used in sim/spice/device_char.py; Vth depends on the extraction method."
+
+- id: pelgrom1989
+  title: "Matching properties of MOS transistors"
+  authors: "M. J. M. Pelgrom, A. C. J. Duinmaijer, A. P. G. Welbers"
+  venue: "IEEE Journal of Solid-State Circuits 24(5), 1433-1439"
+  date: 1989-10
+  kind: peer-reviewed-experimental
+  access: search
+  supports: "sigma(dVth) proportional to 1/sqrt(W L) (area law) plus a distance term; the SKY130 mismatch cards use sigma(Vth0) = A/sqrt(W L mult)."
+
+- id: lundstrom1997
+  title: "Elementary scattering theory of the Si MOSFET"
+  authors: "M. Lundstrom"
+  venue: "IEEE Electron Device Letters 18(7), 361-363"
+  date: 1997
+  doi: 10.1109/55.596937
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "One-flux scattering (backscattering) model; for very short channels the current is limited by injection from the source (ballistic limit)."
+
+- id: bsim4_manual
+  title: "BSIM4 MOSFET Model User's Manual (BSIM4.5.0)"
+  authors: "UC Berkeley BSIM Group (M. Dunga et al.)"
+  date: 2005-07-29
+  version: "4.5.0 (the SKY130 cards declare level=54, version=4.5)"
+  url: https://bsim.berkeley.edu/models/bsim4/
+  kind: compact-model-doc
+  access: search
+  supports: "Model equations of the SKY130 FET cards: binning, capmod=2 charge model, igcmod/igbmod gate-current switches, LOD stress (SA, SB, SAREF, SBREF, KU0, KVTH0), well-proximity effect."
+  limits: "The 4.5.0 manual itself was not inspected (host blocked); equations were exercised through ngspice's BSIM4 implementation."
+
+- id: bsimcmg_manual
+  title: "BSIM-CMG 111.0.0 Technical Manual"
+  authors: "UC Berkeley BSIM Group"
+  url: https://simetrix.co.uk/supplementary/Docs/BSIM-CMG/BSIM-CMG_111.0.0_Technical_Manual.pdf
+  kind: compact-model-doc
+  access: search
+  supports: "Surface-potential compact model for FinFET, nanowire/GAA and multi-gate FETs; includes self-heating network and temperature effects; CMC standard multi-gate model."
+
+# ---------------------------------------------------------------------------
+# E. Arithmetic circuits
+# ---------------------------------------------------------------------------
+- id: wallace1964
+  title: "A Suggestion for a Fast Multiplier"
+  authors: "C. S. Wallace"
+  venue: "IEEE Transactions on Electronic Computers EC-13(1), 14-17"
+  date: 1964-02
+  url: https://ieeemilestones.ethw.org/w/images/2/2a/A_suggestion_for_a_fast_multiplier.pdf
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Column-wise reduction of the partial-product matrix with full adders on bit triples and half adders on remaining pairs; delay proportional to log_{3/2}(N) reduction stages."
+
+- id: dadda1965
+  title: "Some Schemes for Parallel Multipliers"
+  authors: "L. Dadda"
+  venue: "Alta Frequenza 34(5), 349-356"
+  date: 1965
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Reduction to the height sequence 2,3,4,6,9,13,... with the minimum number of counters per stage; fewer adders than Wallace with the same number of stages."
+
+- id: booth1951
+  title: "A Signed Binary Multiplication Technique"
+  authors: "A. D. Booth"
+  venue: "Quarterly Journal of Mechanics and Applied Mathematics 4(2), 236-240"
+  date: 1951
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Recoding of the multiplier to handle two's-complement operands; basis of radix-4 modified Booth (MacSorley 1961)."
+
+- id: baughwooley1973
+  title: "A Two's Complement Parallel Array Multiplication Algorithm"
+  authors: "C. R. Baugh, B. A. Wooley"
+  venue: "IEEE Transactions on Computers C-22(12), 1045-1047"
+  date: 1973-12
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Signed array multiplication by inverting partial-product bits that involve one sign bit and adding correction constants (implemented as pp_baugh_wooley; identity checked exhaustively in tests)."
