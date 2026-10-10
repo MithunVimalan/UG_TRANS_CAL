@@ -1,0 +1,3 @@
+cell,libcorner,when,lib_leak_nW,spice_leak_nW
+inv_1,ss_100C_1v60,A,7.6447311000000004,0.0032089904
+inv_1,ss_100C_1v60,!A,0.4081097000000001,0.00330906220448

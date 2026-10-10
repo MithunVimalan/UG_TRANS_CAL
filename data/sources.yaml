@@ -1,0 +1,116 @@
+# Source catalogue for the UG_TRANS_CAL research project.
+#
+# Fields
+#   id          stable key used in parameter tables and code
+#   title, authors, venue, date, version, url, doi
+#   kind        foundry-qualified | foundry-supplied | open-pdk | compact-model-doc |
+#               peer-reviewed-experimental | peer-reviewed-theoretical | book |
+#               lecture-notes | standard | open-source-code | secondary | predictive
+#   access      how this project inspected it:
+#                 file        - the file itself was read from a pinned git commit
+#                 code        - source code read at a pinned commit
+#                 search      - existence, bibliographic data and abstract-level content
+#                               confirmed through a web-search service; full text NOT
+#                               inspected (the container's network policy blocks
+#                               publisher, arXiv and most documentation hosts)
+#                 restricted  - known to exist, requires licence/NDA/registration; not inspected
+#   location    section / page / table / file path where relevant
+#   supports    the specific claims or numbers this source is used for
+#   limits      known limitations, supersession
+#
+# Research date: 2026-10-10.
+
+# ---------------------------------------------------------------------------
+# A. Fundamental constants and thermodynamics of computation
+# ---------------------------------------------------------------------------
+- id: si2019
+  title: "The International System of Units (SI), 9th edition (2019)"
+  authors: "Bureau International des Poids et Mesures (BIPM)"
+  date: 2019-05-20
+  kind: standard
+  access: search
+  url: https://www.bipm.org/en/publications/si-brochure
+  supports: "Exact defined values of k_B = 1.380649e-23 J/K, e = 1.602176634e-19 C, h = 6.62607015e-34 J s, N_A, c"
+  limits: "Constants are exact by definition; epsilon_0 is not (measured, CODATA)."
+
+- id: codata2022
+  title: "CODATA Recommended Values of the Fundamental Physical Constants: 2022"
+  authors: "P. J. Mohr, D. B. Newell, B. N. Taylor, E. Tiesinga (NIST)"
+  date: 2024
+  kind: standard
+  access: search
+  url: https://physics.nist.gov/cuu/Constants/
+  supports: "epsilon_0 = 8.8541878188(14)e-12 F/m (relative standard uncertainty 1.6e-10)"
+
+- id: landauer1961
+  title: "Irreversibility and Heat Generation in the Computing Process"
+  authors: "R. Landauer"
+  venue: "IBM Journal of Research and Development 5(3), 183-191"
+  date: 1961-07
+  doi: 10.1147/rd.53.0183
+  url: https://ieeexplore.ieee.org/document/5389195
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Logical irreversibility implies a minimum heat generation 'of the order of kT for each irreversible function' (abstract); origin of kT ln 2 per erased bit."
+  limits: "Argument made plausible rather than proven in 1961 (see later critiques and proofs, e.g. Sagawa 2014, and experimental tests)."
+
+- id: bennett1973
+  title: "Logical Reversibility of Computation"
+  authors: "C. H. Bennett"
+  venue: "IBM Journal of Research and Development 17(6), 525-532"
+  date: 1973-11
+  doi: 10.1147/rd.176.0525
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Any computation can be embedded in a logically reversible one (compute, copy output, uncompute) at the cost of extra steps (~2x) and temporary storage; so kT ln2 per step is not a necessary cost of computation, only of erasure."
+
+- id: berut2012
+  title: "Experimental verification of Landauer's principle linking information and thermodynamics"
+  authors: "A. Berut, A. Arakelyan, A. Petrosyan, S. Ciliberto, R. Dillenschneider, E. Lutz"
+  venue: "Nature 483, 187-189"
+  date: 2012-03-08
+  doi: 10.1038/nature10872
+  kind: peer-reviewed-experimental
+  access: search
+  supports: "Colloidal particle in a modulated double-well potential; mean dissipated heat of erasure approaches kT ln2 in the limit of long (quasi-static) erasure cycles; excess heat grows as cycle time shortens."
+
+- id: jun2014
+  title: "High-Precision Test of Landauer's Principle in a Feedback Trap"
+  authors: "Y. Jun, M. Gavrilov, J. Bechhoefer"
+  venue: "Physical Review Letters 113, 190601"
+  date: 2014
+  doi: 10.1103/PhysRevLett.113.190601
+  kind: peer-reviewed-experimental
+  access: search
+  supports: "Asymptotic erasure work 0.71 +/- 0.03 kT vs ln2 = 0.693 kT; dissipation in excess of kT ln2 scales ~1/tau with protocol duration tau."
+
+- id: proesmans2020
+  title: "Finite-Time Landauer Principle"
+  authors: "K. Proesmans, J. Ehrich, J. Bechhoefer"
+  venue: "Physical Review Letters 125, 100602"
+  date: 2020-09-03
+  doi: 10.1103/PhysRevLett.125.100602
+  url: https://ar5iv.labs.arxiv.org/html/2006.03242
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Minimum average work to erase a bit in finite time exceeds kT ln2 by a term that grows as the protocol is shortened; closed form in the short-time limit."
+
+- id: gao_limmer2021
+  title: "Principles of low dissipation computing from a stochastic circuit model"
+  authors: "C. Y. Gao, D. T. Limmer"
+  date: 2021
+  url: https://arxiv.org/abs/2102.13067
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Stochastic transistor-level model of NOT/NAND gates: high accuracy is achievable given enough energy and time, but at low energy accuracy and speed are coupled through device architecture."
+  limits: "Journal venue not confirmed by this project (search results gave arXiv and a 2021 publication date only)."
+
+- id: freitas2021
+  title: "Stochastic Thermodynamics of Nonlinear Electronic Circuits: A Realistic Framework for Computing Around kT"
+  authors: "N. Freitas, J.-C. Delvenne, M. Esposito"
+  venue: "Physical Review X 11, 031064"
+  date: 2021
+  doi: 10.1103/PhysRevX.11.031064
+  kind: peer-reviewed-theoretical
+  access: search
+  supports: "Thermodynamically consistent noise model of MOS transistors in subthreshold; stochastic CMOS inverter deviates from deterministic behaviour near kT-scale energies."
