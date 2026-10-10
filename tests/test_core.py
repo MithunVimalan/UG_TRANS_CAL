@@ -207,3 +207,28 @@ def test_monte_carlo_linear():
     assert r["mean"] == pytest.approx(2.0, abs=0.01)
     assert r["sd"] == pytest.approx(math.sqrt(0.04 + 0.04), rel=0.03)
     assert interval(lambda x: x * x, {"x": (1, 3)}) == (1, 9)
+
+
+def test_uniform_flux_disk_spreading_by_quadrature():
+    """Check R_centre = 1/(pi k a) and R_mean = 8/(3 pi^2 k a) by integrating the
+    half-space surface Green's function T = P/(2 pi k r) over a uniform-flux disk."""
+    import numpy as np
+    k, a, P = 148.0, 50e-6, 1.0
+    q_ = P / (math.pi * a * a)
+    # centre: T = q/(2 pi k) * int_0^a int_0^2pi (1/r) r dr dphi = q a / k
+    T_c = q_ * a / k
+    assert T_c / P == pytest.approx(1 / (math.pi * k * a), rel=1e-12)
+    # mean: average of the potential phi(r) = int dA'/|r-r'| over the disk (polar quadrature)
+    nr, nphi = 400, 400
+    rs = (np.arange(nr) + 0.5) / nr * a
+    phis = (np.arange(nphi) + 0.5) / nphi * 2 * math.pi
+    # potential of a uniform disk at radius r0 (closed form via elliptic integral avoided:
+    # integrate in polar coordinates centred on the field point)
+    def phi_at(r0):
+        th = phis
+        # distance from field point to disk edge along direction th
+        s = -r0 * np.cos(th) + np.sqrt(a * a - (r0 * np.sin(th)) ** 2)
+        return float(np.sum(s) * (2 * math.pi / nphi))   # int_0^2pi s(th) dth
+    mean_phi = sum(phi_at(r) * 2 * math.pi * r * (a / nr) for r in rs) / (math.pi * a * a)
+    T_m = q_ / (2 * math.pi * k) * mean_phi
+    assert T_m / P == pytest.approx(8 / (3 * math.pi ** 2 * k * a), rel=2e-3)

@@ -132,19 +132,33 @@ def main():
                             if g_ != "inputs":
                                 row[f"share_{g_}"] = sum(v.values()) / tot
                     rows.append(row)
+                    _append(out, row)
                     print(f"n={n} {'s' if signed else 'u'} {name:18s} {dist:8s} cells={len(nl.gates):4d} "
                           f"area={area:7.0f} crit={sta['delay_s']*1e9:6.3f}ns "
                           + " ".join(f"E_{m}={row[f'E_{m}_fJ']:7.1f}" for m in res)
                           + f" ({time.time()-t0:.0f}s)", flush=True)
+    _rewrite(out, rows)
+
+
+def _append(path, row):
+    """Append one row as JSON lines next to the CSV so partial runs are kept."""
+    import json
+    with open(path + ".partial.jsonl", "a") as fh:
+        fh.write(json.dumps(row) + "\n")
+
+
+def _rewrite(path, rows):
     keys = []
     for r in rows:
         for k in r:
             if k not in keys:
                 keys.append(k)
-    with open(out, "w", newline="") as fh:
+    with open(path, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=keys)
         w.writeheader()
         w.writerows(rows)
+    if os.path.exists(path + ".partial.jsonl"):
+        os.remove(path + ".partial.jsonl")
 
 
 if __name__ == "__main__":
