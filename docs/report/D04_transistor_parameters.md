@@ -98,18 +98,64 @@ FO4 chain of layout-extracted inv_1 cells (`sim/spice/vdd_sweep.py`). Below 1.28
 <!-- BEGIN:vdd_sweep -->
 | T (°C) | V_DD (V) | FO4 delay (ps) | E per FO4 transition (fJ) | inv_1 leakage (pW) | E·t (fJ·ns) |
 |---|---|---|---|---|---|
-| 25 | 1.8 | 84.27 | -18.6 | 1.17 | -1.57 |
-| 25 | 0.6 | 8.416e+04 | -1.58 | 0.0273 | -133 |
+| 25 | 1.95 | 73.65 | 22.1 | 2.55 | 1.63 |
+| 25 | 1.8 | 84.27 | 18.6 | 1.17 | 1.57 |
+| 25 | 1.6 | 106.6 | 14.4 | 0.456 | 1.54 |
+| 25 | 1.4 | 148.7 | 10.8 | 0.225 | 1.6 |
+| 25 | 1.2 | 246.8 | 7.63 | 0.134 | 1.88 |
+| 25 | 1 | 596.8 | 5.04 | 0.0826 | 3.01 |
+| 25 | 0.9 | 1256 | 3.95 | 0.0642 | 4.96 |
+| 25 | 0.8 | 3775 | 3.01 | 0.0492 | 11.4 |
+| 25 | 0.7 | 1.614e+04 | 2.22 | 0.037 | 35.9 |
+| 25 | 0.6 | 8.416e+04 | 1.58 | 0.0273 | 133 |
+| 25 | 0.5 | 5.976e+05 | 1.08 | 0.0194 | 643 |
+| 25 | 0.45 | 1.848e+06 | 0.865 | 0.0162 | 1.6e+03 |
+| 25 | 0.4 | 6.103e+06 | 0.683 | 0.0133 | 4.17e+03 |
+| 25 | 0.35 | 2.082e+07 | 0.53 | 0.0107 | 1.1e+04 |
+| 25 | 0.3 | 7.133e+07 | 0.417 | 0.00844 | 2.97e+04 |
+| 100 | 1.95 | 75.73 | 22.7 | 159 | 1.72 |
+| 100 | 1.8 | 85.4 | 19.1 | 124 | 1.63 |
+| 100 | 1.6 | 104.8 | 14.8 | 88.3 | 1.56 |
+| 100 | 1.4 | 138.6 | 11.1 | 62 | 1.54 |
+| 100 | 1.2 | 207 | 7.94 | 42.6 | 1.64 |
+| 100 | 1 | 391.3 | 5.3 | 28.4 | 2.07 |
+| 100 | 0.9 | 638 | 4.19 | 22.9 | 2.67 |
+| 100 | 0.8 | 1280 | 3.22 | 18.2 | 4.12 |
+| 100 | 0.7 | 3510 | 2.38 | 14.2 | 8.36 |
+| 100 | 0.6 | 1.353e+04 | 1.69 | 10.9 | 22.9 |
+| 100 | 0.5 | 6.708e+04 | 1.14 | 8.07 | 76.3 |
+| 100 | 0.45 | 1.588e+05 | 0.908 | 6.86 | 144 |
+| 100 | 0.4 | 3.857e+05 | 0.708 | 5.75 | 273 |
+| 100 | 0.35 | 9.495e+05 | 0.535 | 4.74 | 508 |
+| 100 | 0.3 | 2.34e+06 | 0.388 | 3.82 | 907 |
+
+
+Alpha-power-law fit $t_{FO4} = kV/(V-V_t)^\alpha$ to the FO4 delay for V_DD ≥ 1.0 V (`ugcal.switching.fit_alpha_power`, class E; for interpolation only): 25 °C: V_t = 0.785 V, α = 1.64, rms log error 0.007 (6 points, 1–1.95 V); 100 °C: V_t = 0.695 V, α = 1.64, rms log error 0.005 (6 points, 1–1.95 V).
 <!-- END:vdd_sweep -->
+
+**Reading the sweep.**
+* **Energy per transition** falls from 18.6 fJ at 1.8 V to 3.0 fJ at 0.8 V and 0.42 fJ at 0.3 V (25 °C). That is slightly faster than V², because the effective switched capacitance $E/V^2$ falls from 5.7 fF to 4.6 fF as the devices leave strong inversion.
+* **Delay** grows from 84 ps (1.8 V) to 3.8 ns (0.8 V), 84 ns (0.6 V) and 71 µs (0.3 V). It grows 5–7× per 100 mV between 0.7 and 0.5 V and about one decade per 100 mV below 0.5 V, consistent with the subthreshold slope of the devices (§2).
+* The **FO4 energy–delay product is lowest at 1.6 V** (25 °C) and 1.4 V (100 °C), within 2–6 % of its value at the 1.8 V nominal supply. For speed-constrained logic the nominal supply is close to optimal in this sense.
+* **Temperature inversion.** At 1.95 and 1.8 V the 100 °C chain is 3 % and 1 % slower than at 25 °C. At 1.6 V and below it is faster: 1.5× at 1.0 V, 6.2× at 0.6 V, 30× at 0.3 V, because the threshold voltage falls with temperature faster than mobility does. The "slow, hot" sign-off corner is therefore not the slowest corner below ≈1.6 V. Low-voltage timing must be signed off cold.
+* Inverter leakage rises ≈100× from 25 °C to 100 °C at 1.8 V (1.2 → 124 pW).
 
 **Minimum-energy point of a MAC (class E model, D6 §8).** The MAC's energy at 1.8 V is expressed as an equivalent number of FO4 transitions and scaled with the FO4 energy curve. Its Liberty leakage at 1.8 V is scaled with the inverter leakage curve, and its cycle time with the FO4 delay. This assumes glitch fraction, logic depth in FO4 and leakage mix are independent of supply. All three are approximations, flagged in D12.
 
 <!-- BEGIN:mep -->
 | T (°C) | MAC variant | logic depth (FO4 at 1.8 V) | equivalent FO4 transitions/MAC | model E/MAC at 1.8 V (fJ) | V_opt (V) | E/MAC at V_opt (fJ) | gain vs 1.8 V | cycle time at V_opt (ns) |
 |---|---|---|---|---|---|---|---|---|
-| 25 | csa_acc_bw_kogge_stone | 38.6 | -301 | 5603 | ≤ 0.6 | 476.4 | 11.8 | 3249 |
-| 25 | separate_bw_ripple_accripple | 114 | -267 | 4967 | ≤ 0.6 | 422.5 | 11.8 | 9586 |
+| 25 | csa_acc_bw_kogge_stone | 38.6 | 301 | 5603 | ≤ 0.3 | 169.9 | 33 | 2.753e+06 |
+| 25 | separate_bw_ripple_accripple | 114 | 267 | 4967 | 0.35 | 166 | 29.9 | 2.372e+06 |
+| 100 | csa_acc_bw_kogge_stone | 38.1 | 293 | 5606 | 0.5 | 445.5 | 12.6 | 2555 |
+| 100 | separate_bw_ripple_accripple | 112 | 260 | 4971 | 0.5 | 467.4 | 10.6 | 7538 |
 <!-- END:mep -->
+
+**Reading the model.**
+* At 100 °C the modelled minimum-energy supply is 0.5 V: 0.45–0.47 pJ per MAC, 11–13× below 1.8 V, at cycle times of 2.6–7.5 µs.
+* At 25 °C the high-Vt PMOS keeps leakage so low that the optimum moves to 0.3–0.35 V. That is at or below the lowest simulated point for the carry-save MAC, so it is reported as "≤ 0.3 V". The modelled energy is ≈0.17 pJ (30–33× below 1.8 V), but at millisecond cycle times.
+* These are **class E indications, not design points**. The model scales one inverter. It ignores variability: a 3σ threshold shift of ≈40 mV against a ≈90 mV/decade slope changes a gate's delay by ≈3×. It also ignores flip-flop and hold-time behaviour at low supply, noise margins of stacked gates, and the change of glitch fraction with supply.
+* The defensible conclusion is narrower: in SKY130 HD, an order of magnitude of energy per MAC is available from supply scaling alone, at a cost of 10³–10⁶× in throughput per unit area. Quantifying it for a real MAC needs the low-voltage characterisation of D14 Stage B.
 
 ## 5. Leakage: the two foundry data sets disagree at high temperature
 

@@ -28,12 +28,13 @@ The circuit sits about **10⁸ above the thermodynamic floor**. The floor is rea
 
 **Transistor and cell level (D4, D6).**
 * The foundry's schematic cell netlists are not adequate for energy or delay: −39 % energy and −67 % fall delay against the library at the worst points. Layout extraction with stress (LOD) parameters reproduces the Liberty energy within −1.6 … +5.6 %.
+* Supply scaling (FO4 inverter chain, SPICE): energy per transition falls from 18.6 fJ at 1.8 V to 0.42 fJ at 0.3 V, while the delay rises from 84 ps to 71 µs. Below ≈1.6 V the chain is faster hot than cold (temperature inversion, 6× at 0.6 V), so low-voltage timing must be signed off cold. A minimum-energy-point model suggests 11–33× lower energy per MAC near 0.3–0.5 V, at 10³–10⁶× lower throughput. It is a class E indication, not a design point.
 * At 100 °C the Liberty leakage is 16× (tt) to ≈560× (ss) above SPICE with the same-named model corner. It matches a separate, unreferenced "leak" model set. Leakage at high temperature is uncertain by one to three decades. For the active arrays studied it is ≤ 1.3 % of power, so the conclusions do not depend on it.
 
 **Multipliers (D7; 8×8, tt 25 °C 1.8 V, pre-layout).**
 * Energy spans 1.58–4.81 pJ and delay 3.47–8.86 ns across architectures for identical arithmetic.
 * **Glitches are the dominant architecture-dependent term.** Functional energy is nearly identical for all AND-array designs (1.21–1.24 pJ with ripple adders). Inertial glitches add 31–102 % to the AND-array designs and 111 % to Booth + Dadda + KS.
-* Transistor-level SPICE of whole multipliers lands inside the gate-level [inertial, transport] bracket, at 1.19–1.30× the inertial estimate.
+* Transistor-level SPICE of whole multipliers lands inside the gate-level [inertial, transport] bracket, at 1.19–1.37× the inertial estimate for all six designs simulated, and ranks them in the same order.
 * Dadda + ripple has the lowest energy; Kogge–Stone final adders are fastest and costliest.
 * Radix-4 Booth does *not* save energy in this library (signed 8×8: 4.43 vs 3.12 pJ for Baugh–Wooley).
 * Hand-structured netlists beat Yosys/ABC by 13–37 % in energy.

@@ -30,7 +30,8 @@ def build_inputs():
                       valid=(q(1.28, "V"), q(1.95, "V")), note="library characterised 1.28-1.95 V")
     P["E_MAC"] = Param("E_MAC", q(5.603, "pJ"), Cls.E, source="results/power/mac_study.csv (csa_acc_bw_kogge_stone)",
                        unit="J", u_rel=0.20,
-                       note="gate level, inertial; SPICE/inertial = 1.19 for the 8x8 array (D7) -> 20 % taken as 1-sigma")
+                       note="gate level, inertial; whole-multiplier SPICE is 1.19-1.37x the inertial value (D7 §7), a systematic "
+                            "under-estimate; 20 % is used here as an illustrative 1-sigma")
     P["f_clk"] = spec("f_clk", q(145, "MHz"), "Hz", note="sign-off f_max at ss/100 C (D8)")
     P["area"] = Param("A_PE", q(4761 / 0.7, "um^2"), Cls.E, source="Liberty cell area / 0.7 utilisation", unit="m^2")
     P["P_leak_25"] = Param("P_leak,PE(25C)", q(2.24, "nW"), Cls.C, source="Liberty tt_025C_1v80 cell_leakage_power sum",

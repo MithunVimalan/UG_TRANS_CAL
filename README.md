@@ -58,7 +58,7 @@ python3 tools/make_report_tables.py        # regenerate every table in the repor
 ## Key results (SKY130 HD, tt, 25 °C, 1.8 V unless stated)
 
 * Thermodynamic floor of an int8 MAC that discards its operands: 4.6 × 10⁻²⁰ J. The best pre-layout MAC built here: 4.97 pJ, about 10⁸ higher.
-* 8×8 multipliers: 1.58–4.81 pJ and 3.47–8.86 ns across architectures. Glitches are the dominant architecture-dependent term. Whole-multiplier SPICE lies at 1.19–1.30× the inertial gate-level estimate.
+* 8×8 multipliers: 1.58–4.81 pJ and 3.47–8.86 ns across architectures. Glitches are the dominant architecture-dependent term. Whole-multiplier SPICE (six designs) lies at 1.19–1.37× the inertial gate-level estimate and preserves the ranking.
 * Radix-4 Booth costs more energy than Baugh–Wooley in this library. Operand statistics change energy by up to 6.5×.
 * Registers and clock pins are about half or more of the energy of the lowest-energy MACs. A same-process post-route array costs 2.6–3.9× our pre-layout PEs.
 * Throughput is package-limited: 0.18–2.7 TOPS for θ_JA = 10–60 K/W, with T_j ≤ 100 °C (the characterisation limit).

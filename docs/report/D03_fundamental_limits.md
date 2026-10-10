@@ -124,7 +124,7 @@ A bit stored behind a barrier $E_b$ flips by thermal activation with per-attempt
 | Ideal inverter, unity gain | $2\ln2\,k_BT/q$ | 35.84 mV | 35.62 mV | 44.58 mV | D, via secondary [meindl2000] |
 | Swanson–Meindl functional limit | $\approx 8\,k_BT/q$ | 206.8 mV | 205.5 mV | 257.2 mV | D [swanson1972] |
 
-These assume weak-inversion devices with ideal (or 1972-technology) slope factors. **SKY130 context (class F):** the HD cells use high-Vt PMOS (|V_th| ≈ 0.89 V at 7/0.15 µm, tt). The simulated FO4 delay is about 84 ns at 0.6 V, against tens of ps at 1.8 V (D4 §4). The practical minimum supply of this library is set by its threshold voltages and by the absence of characterisation below 1.28 V, not by these bounds.
+These assume weak-inversion devices with ideal (or 1972-technology) slope factors. **SKY130 context (class F):** the HD cells use high-Vt PMOS (|V_th| ≈ 0.89 V at 7/0.15 µm, tt). The simulated FO4 delay is 84 ps at 1.8 V, 84 ns at 0.6 V and 71 µs at 0.3 V (25 °C, D4 §4). The inverter chain still switches at 0.3 V, about 1.5× the Swanson–Meindl figure, but at a speed no synchronous design would use. The practical minimum supply of this library is therefore set by speed, by variability (mismatch σ_Vth of 11–14 mV for the inv_1 devices, against a 85–90 mV/dec slope) and by the absence of foundry characterisation below 1.28 V, not by these bounds.
 
 ---
 

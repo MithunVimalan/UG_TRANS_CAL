@@ -123,7 +123,7 @@ def t_vdd_sweep():
                         f"{max(float(r['VDD_V']) for r in rows):g} V)")
     if fits:
         text += ("\n\nAlpha-power-law fit $t_{FO4} = kV/(V-V_t)^\\alpha$ to the FO4 delay for V_DD ≥ 1.0 V "
-                 "(`ugcal.switching.fit_alpha_power`, class E; for interpolation only): " + "; ".join(fits) + ".")
+                 "(`ugcal.switching.fit_alpha_power`, class E; for interpolation only): " + "; ".join(fits) + ".\n")
     return text
 
 

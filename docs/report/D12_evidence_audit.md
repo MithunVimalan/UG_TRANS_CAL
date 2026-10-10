@@ -53,7 +53,7 @@ A result's class is the weakest class among the inputs it depends on, unless the
 | Device table (V_th, SS, DIBL, I_on, I_off) | D4 §2 | V_th is method-dependent (constant current). It agrees with the foundry documentation within 3–5 mV at two documented geometries and 20–50 mV at others; the documentation does not state the bias conditions |
 | Liberty 100 °C leakage ≫ same-corner SPICE | 16× (tt), ≈560× (ss), ≈4× (ff) | the reason (a `leak` model set) is an **inference**; characterisation undocumented |
 | FO4 delay and energy vs V_DD | D4 §4 | below 1.28 V no foundry characterisation to compare with; cards nominally valid |
-| Whole-multiplier SPICE vs gate-level | ripple array: SPICE 1.19× inertial, inside [inertial, transport] | 40 transitions, one corner; no inter-cell wires; D7 §7 for the other designs |
+| Whole-multiplier SPICE vs gate-level | six 8×8 designs: SPICE 1.19–1.37× inertial, always inside [inertial, transport]; identical energy ranking | 30–40 transitions, one corner (tt, 25 °C, 1.8 V); no inter-cell wires |
 
 **Model-derived (E): gate-level on Liberty, analytical envelopes.** These are the bulk of the quantitative conclusions. Each is conditional on Liberty data being right, on no wires, on drive-1 cells and on the stated stimulus.
 
@@ -86,7 +86,7 @@ The ten questions of the brief (§21), answered for the numbers that carry the c
 | 2.295 / 3.144 bits per 8×8 product | exact enumeration | Y (mathematics) | Y (code) | Y (bits) | uniform operands | Y | Y | theory | exact | no |
 | SS 85–90 mV/dec | SPICE on foundry cards | Y | Y | Y | Y (W/L, bias, T) | Y | Y | simulation | method-dependent, not quantified | no |
 | inv_1 energy within −1.6 … +5.6 % of Liberty | SPICE vs Liberty | Y | Y | Y | Y | Y | Y | simulation | range shown | no |
-| E_MAC = 5.60 pJ (csa) | gate-level on Liberty | Y (foundry data) | Y | Y | Y (tt, 25 °C, 1.8 V, uniform, inertial) | P (NLDM, no wires) | Y | model | ±20 % assigned from SPICE/gate ratios | no, stated pre-layout |
+| E_MAC = 5.60 pJ (csa) | gate-level on Liberty | Y (foundry data) | Y | Y | Y (tt, 25 °C, 1.8 V, uniform, inertial) | P (NLDM, no wires) | Y | model | SPICE of six multipliers is 19–37 % above the inertial gate level (a systematic under-estimate); ±20 % used as an illustrative 1σ | no, stated pre-layout |
 | f_max 307 / 145 MHz | gate-level STA | Y | Y | Y | Y | P (no wires, no skew) | Y | model | not quantified; optimistic | stated as an upper estimate |
 | Liberty-vs-SPICE leakage gap at 100 °C | both foundry data sets | Y | Y | Y | P (Liberty conditions undocumented) | Y | Y | simulation | 1–3 decades | cause stated as inference |
 | 0.18–2.7 TOPS thermal envelope | E_MAC × swept θ | P (θ not a fact) | — | Y | Y | Y (steady state) | Y | model | swept, not a distribution | no; conditional on θ |

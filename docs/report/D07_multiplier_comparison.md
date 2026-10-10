@@ -134,6 +134,7 @@ The same operand sequence was simulated in ngspice on the full transistor netlis
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | array_rc | u | extracted_lod | 41 | 12 | 3067 | 1281 | 2587 | 5139 | 1.19 | 0.597 | 0 | 19.4 |
 | braun | u | extracted_lod | 31 | 12 | 2629 | 1289 | 2080 | 3945 | 1.26 | 0.666 | 0 | 15.6 |
+| wallace_rca | u | extracted_lod | 31 | 12 | 2379 | 1283 | 1735 | 3903 | 1.37 | 0.609 | 0 | 12.2 |
 | dadda_rca | u | extracted_lod | 31 | 12 | 2153 | 1291 | 1659 | 3436 | 1.3 | 0.627 | 0 | 15.4 |
 | dadda_ks | u | extracted_lod | 31 | 12 | 3429 | 1670 | 2696 | 5766 | 1.27 | 0.595 | 0 | 19.5 |
 | booth4_dadda_ks | s | extracted_lod | 31 | 12 | 5522 | 2085 | 4547 | 1.491e+04 | 1.21 | 0.37 | 0 | 20.3 |
@@ -141,14 +142,14 @@ The same operand sequence was simulated in ngspice on the full transistor netlis
 
 **Reading the table.**
 * Every product was correct at the end of its cycle in SPICE.
-* For every design the transistor-level energy lies **inside the gate-level [inertial, transport] bracket**: SPICE/inertial = 1.19–1.30 and SPICE/transport = 0.37–0.67. Against zero delay, SPICE is 1.7–2.6× higher, so the glitch energy is physical and not an artefact of the gate model.
-* **The inertial model under-estimates absolute energy by 19–30 % but preserves the ranking**: SPICE and inertial gate level order the designs identically (Dadda + ripple < Braun < ripple-carry array < Dadda + KS < Booth + Dadda + KS; Wallace + ripple pending).
+* For every design the transistor-level energy lies **inside the gate-level [inertial, transport] bracket**: SPICE/inertial = 1.19–1.37 and SPICE/transport = 0.37–0.67 for all six designs. Against zero delay, SPICE is 1.7–2.6× higher, so the glitch energy is physical and not an artefact of the gate model.
+* **The inertial model under-estimates absolute energy by 19–37 % but preserves the ranking**: SPICE and inertial gate level order the six designs identically (Dadda + ripple < Wallace + ripple < Braun < ripple-carry array < Dadda + KS < Booth + Dadda + KS; `tools/spice_mult_summary.py` checks this).
 * The gate-level columns here are recomputed on the same 30–40 transitions as SPICE. They differ from the 1 001-vector tables above by sampling (array_rc inertial: 2 587 fJ here vs 2 434 fJ above).
 * Inter-cell wiring is absent in both models.
 
 ## 8. Findings
 
-1. **Glitches are the dominant architecture-dependent term.** Functional (zero-delay) energy is nearly the same for every AND-array design at a given width (8×8: 1.21–1.24 pJ for array/Braun/Wallace/Dadda with ripple adders). The spread between architectures comes from spurious transitions. In inertial mode they add 31 % (Dadda + ripple) to 102 % (ripple-carry array) at 8×8, and 37 % to 238 % at 16×16. Transistor-level SPICE lands between the inertial and transport brackets: for the ripple array, SPICE is 1.19× the inertial estimate. Gate-level power that ignores glitches (zero-delay, or the 0.1-toggle default of an un-annotated STA run) under-estimates these multipliers by 1.3–3.4×.
+1. **Glitches are the dominant architecture-dependent term.** Functional (zero-delay) energy is nearly the same for every AND-array design at a given width (8×8: 1.21–1.24 pJ for array/Braun/Wallace/Dadda with ripple adders). The spread between architectures comes from spurious transitions. In inertial mode they add 31 % (Dadda + ripple) to 102 % (ripple-carry array) at 8×8, and 37 % to 238 % at 16×16. Transistor-level SPICE of six 8×8 designs lands inside the inertial–transport bracket every time, at 1.19–1.37× the inertial estimate, and ranks the designs in the same order (§7). Gate-level power that ignores glitches (zero-delay, or the 0.1-toggle default of an un-annotated STA run) under-estimates these multipliers by 1.3–3.4×.
 2. **Tree reduction beats arrays on energy and delay, and Dadda edges out Wallace.** At 8×8 with ripple final adders, Dadda uses 35 FA + 7 HA in the tree against Wallace's 36 + 25. It has 16 fewer cells and the lowest inertial energy of any design (1.58 pJ), and its critical path (5.90 ns) is shorter than Wallace's (6.13 ns). The ripple-carry array is slowest (8.86 ns) and glitchiest.
 3. **The final adder trades energy for delay.** Replacing the ripple CPA by a prefix adder cuts the 8×8 critical path from 5.90 to 3.47–3.72 ns but raises energy by 38–72 %. Brent–Kung is the most economical prefix network here (2.19 pJ, 3.72 ns), and it has the lowest energy-delay product among Dadda variants together with Sklansky. Kogge–Stone is the fastest and most glitch-prone.
 4. **Radix-4 Booth does not pay off in this library at 8 or 16 bits.** It halves the partial-product rows, but the encoders and the XOR-based selectors are heavy in SKY130 HD and very glitchy (transport/zero factor 7–10). Signed 8×8: 4.43 pJ (Booth + Dadda + KS) vs 3.12 pJ (Baugh–Wooley + Dadda + KS) at about the same delay. At 16×16: 18.3 pJ vs 11.6 pJ (unsigned Dadda + KS). This contradicts the common rule of thumb that Booth saves energy. The rule assumes a library and widths where reducing adder count dominates, which is not the case here.
@@ -160,5 +161,5 @@ The same operand sequence was simulated in ngspice on the full transistor netlis
 
 * Pre-layout: no wire capacitance or resistance. The SKY130 OpenRCX extractor's total-capacitance error has been reported as ≈20 % against a field solver (input research file, not re-verified). Wires add more energy to tree multipliers, whose wiring is irregular, than to arrays.
 * No gate sizing or buffering. A timing-driven flow would upsize critical cells and buffer high-fanout nets (Booth select lines, AND-array operand bits), shifting delay and energy differently for each design.
-* Gate-level delays are static (one slew per pin); the glitch bracket is inertial versus transport. The transistor-level runs (§6) arbitrate for 8×8 designs at one corner and one stimulus.
+* Gate-level delays are static (one slew per pin); the glitch bracket is inertial versus transport. The transistor-level runs (§7) arbitrate for six 8×8 designs at one corner and one 30–40-transition stimulus.
 * Results are for tt/25 °C/1.8 V. Energy scales approximately with $V^2$ (D4 §4); delay rankings hold across corners for these netlists (same cells), which was checked for the MAC netlists at ss/100 °C (D8).
