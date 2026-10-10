@@ -34,6 +34,7 @@ Each gap is stated as the brief's missing-data policy (§3) requires: what is mi
 | JEDEC JESD51 series | definition of θ_JA, θ_JC, Ψ_JT | registration required | used only to state that θ_JA is a package-comparison metric |
 | SkyWater Electrical Design Rules, reliability and qualification data | items 6–8 above | not released | class I |
 | Commercial PDKs (TSMC, Samsung, Intel Foundry, GF 22FDX) | leading-edge device data | NDA | not used numerically (D5) |
+| IHP SG13G2 and GF180MCU open PDKs (model files) | second open process for cross-checking SKY130 conclusions | public on GitHub, but not checked out in this session | compact-model family and maturity unconfirmed (D5); a second-process check of the architecture rankings remains to be done |
 | IRDS More Moore tables | node-to-node projections | site blocked; registration status unconfirmed | not used |
 
 ## 3. Claims taken from secondary sources and not re-verified

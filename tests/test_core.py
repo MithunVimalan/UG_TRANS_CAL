@@ -250,3 +250,22 @@ def test_worked_example_runs():
     assert set(out["T_j"].input_classes()) == {"C", "E", "S"}
     with pytest.raises(MissingParameter):
         P["E_M_tree"].require("clock-tree energy")
+
+
+# ------------------------------------------------------------- bibliography
+def test_report_citations_exist_in_source_catalogue():
+    """Every [source_id] cited in the report is defined in data/sources.yaml (no orphan citations)."""
+    import glob
+    import re
+    yaml = pytest.importorskip("yaml")
+    root = os.path.join(os.path.dirname(__file__), "..")
+    src = yaml.safe_load(open(os.path.join(root, "data", "sources.yaml")))
+    ids = [s["id"] for s in src]
+    assert len(ids) == len(set(ids)), "duplicate source ids"
+    for s in src:
+        assert s.get("access") in {"file", "code", "search", "restricted", "input-file"}, s["id"]
+        assert s.get("cat") in set("ABCDEFGH"), s["id"]
+    markers = {"derived", "unverified"}
+    for f in glob.glob(os.path.join(root, "docs", "report", "*.md")):
+        for m in re.findall(r"\[([a-z][a-z0-9_]+)\]", open(f).read()):
+            assert m in ids or m in markers, (os.path.basename(f), m)
